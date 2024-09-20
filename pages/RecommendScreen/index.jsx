@@ -1,8 +1,11 @@
-import { View } from "react-native";
+import { Text, View } from 'react-native';
+import React from 'react';
 
-const RecommendScreen=()=>{
+const RecommendScreen = ()=>{
     return(
-        <View>推荐</View>
-    )
-}
+        <View>
+            <Text>recommend</Text>
+        </View>
+    );
+};
 export default RecommendScreen;
