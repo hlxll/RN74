@@ -2,26 +2,19 @@
 
 import * as React from 'react';
 import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import RecommendScreen from './pages/RecommendScreen'
+import DiscoverScreen from './pages/DiscoverScreen'
+import RoamScreen from './pages/RoamScreen'
+import DynamicScreen from './pages/DynamicScreen'
+import OwnScreen from './pages/OwnScreen'
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
-
-const Stack = createNativeStackNavigator();
-
+const Tab = createBottomTabNavigator();
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen name="推荐" component={RecommendScreen}></Tab.Screen>
+    </Tab.Navigator>
   );
 }
 
