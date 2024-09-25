@@ -8,7 +8,7 @@ const {assetPlugin, customResolver } = require('./myAssetPlugin')
  * @type {import('metro-config').MetroConfig}
  */
 const defaultConfig = getDefaultConfig(__dirname);
-const config = {
+const config1 = {
     resolver: {//解析配置
         assetExts: defaultConfig.resolver.assetExts.filter(ext => ext !== 'svg'),
         //可以包含在bundle中的Asset扩展名列表,静态资源，直接作为资源打包
@@ -115,6 +115,15 @@ const config = {
     resetCache: false, //构建时是否重置缓存
     stickyWorkers: false, //是否基于文件名创建workers
     maxWorkers: 5, //转换时可以并行的最大值
+};
+const config = {
+    resolver: {
+        assetExts: defaultConfig.resolver.assetExts.filter(ext => ext !== 'svg'),
+        sourceExts: [...defaultConfig.resolver.sourceExts, 'svg'],
+    },
+    transformer: {
+        babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    },
 };
 //mergeConfig合并胚子
 module.exports = mergeConfig(defaultConfig, config);

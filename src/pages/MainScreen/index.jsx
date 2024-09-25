@@ -25,7 +25,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 function MainScreen() {
-    const [initTab, setInitTab] = useState('discover');
+    const [initTab, setInitTab] = useState('Recommend');
     const [showRoam, setShowRoam] = useState(false);
     const navigation = useNavigation();
     const RoamModal = (props)=>{
@@ -44,10 +44,10 @@ function MainScreen() {
         navigation.navigate(initTab);
     };
     return (
-        <Tab.Navigator initialRouteName={'Discover'}>
+        <Tab.Navigator initialRouteName={'Recommend'}>
             <Tab.Screen name="Recommend" component={RecommendScreen}
             listeners={{
-                tabPress: ()=>{handleChangeInit('Discover');},
+                tabPress: ()=>{handleChangeInit('Recommend');},
             }}
                 options={{
                     title:'推荐',
