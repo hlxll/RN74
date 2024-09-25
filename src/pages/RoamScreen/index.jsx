@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
-import RNPickerSelect from 'react-native-picker-select';
+// import RNPickerSelect from 'react-native-picker-select';
 import ShareIcon from '../../static/image/share.svg';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
@@ -39,11 +39,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 <View>
                     <View style={styles.head}>
                         <ToBottom onPress={handle_toBack} width={20} height={20}/>
-                        <RNPickerSelect
-                            items={modelItems}
-                            style={styles.modelSelect}
-                            onValueChange={handleModelChange}
-                            />
+                        
                         <ShareIcon width={20} height={20}/>
                     </View>
                 </View>
