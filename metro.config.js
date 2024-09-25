@@ -25,7 +25,8 @@ const config = {
         useWatchman: true,//是否使用watchman
         blacklistRE: '',//通过正则指定打包的黑名单
         hasteImplModulePath: './hasteImpl.js',//处理自定义名称的模块，返回一个正确的模块名称
-        platforms: ['io', 'android', 'web'],//指定支持的平台,可以为每个平台提供特定文件
+        platforms: ['io', 'android', 'web'],
+        //指定支持的平台,可以为每个平台提供特定文件
         //例如创建js文件可以创建name.io.js和name.android.js文件,metro会自动选择
     },
     transformer: {//转换配置
