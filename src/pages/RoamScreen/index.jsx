@@ -1,4 +1,4 @@
-import { Animated, Image, Modal, View } from 'react-native';
+import { Animated, Image, Modal, View, Text } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
@@ -74,7 +74,9 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                     <View style={styles.musicPlay}>
                         <View style={styles.leftDetail}>
                             <View style={styles.textMove}>
-                                <Text style={{marginLeft: -leftMove, ...styles.textMoveText}} ref={moveTextRef} onLayout={handleLayoutMove}>
+                                <Text style={{marginLeft: -leftMove, ...styles.textMoveText}} 
+                                    ref={moveTextRef} 
+                                    onLayout={handleLayoutMove}>
                                     My songs know What You Did The Dark(Light Em Up)
                                 </Text>
                             </View>
@@ -88,6 +90,10 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                             </Text>
                         </View>
                         <View style={styles.rightIcon}></View>
+                    </View>
+                    <View style={styles.musicPlugin}></View>
+                    <View style={styles.footerIcon}>
+                        
                     </View>
                 </View>
             </LinearGradient>
