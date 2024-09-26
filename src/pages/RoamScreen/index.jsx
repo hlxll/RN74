@@ -1,10 +1,10 @@
-import { Modal, View } from 'react-native';
+import { Image, Modal, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
-// import RNPickerSelect from 'react-native-picker-select';
 import ShareIcon from '../../static/image/share.svg';
+// import TagSelect from 'react-native-tag-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
     useEffect(()=>{
@@ -38,9 +38,13 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 style={styles.roamScreen}>
                 <View>
                     <View style={styles.head}>
-                        <ToBottom onPress={handle_toBack} width={20} height={20}/>
-                        
-                        <ShareIcon width={20} height={20}/>
+                        <ToBottom onPress={handle_toBack} style={styles.backICon} width={20} height={20}/>
+                        {/* <TagSelect data={modelItems} type={'default'}/> */}
+                        <View style={styles.centerHead}></View>
+                        <ShareIcon width={20} height={20} style={styles.rightUrl}/>
+                    </View>
+                    <View>
+                        <Image source={require('../../static/image/')}/>
                     </View>
                 </View>
             </LinearGradient>
