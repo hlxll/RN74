@@ -24,6 +24,35 @@ const styles = StyleSheet.create({
     rightUrl: {
         position: 'relative',
         right: 20,
+    },
+    roamBackImage: {
+        width: '100%',
+        height: '50%',
+        resizeMode:'contain'
+    },
+    musicPlay: {
+        marginTop: 'auto',
+        height: 60,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    leftDetail: {
+        width: '66%',
+    },
+    textMove: {
+        color: '#fff',
+        width:'100%',
+        overflow:'hidden',
+    },
+    textMoveText: {
+        fontSize: 16
+    },
+    userFollow:{
+        color:'#ddd',
+        fontSize: 14,
+    },
+    rightIcon: {
+        width: '34%'
     }
 });
 export default styles;
