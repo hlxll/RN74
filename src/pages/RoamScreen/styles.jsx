@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
         height: 60,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     leftDetail: {
         width: '66%',
@@ -42,17 +42,35 @@ const styles = StyleSheet.create({
     textMove: {
         color: '#fff',
         width:'100%',
+        height: 30,
         overflow:'hidden',
     },
     textMoveText: {
-        fontSize: 16
+        fontSize: 16,
+        lineHeight: 30,
     },
     userFollow:{
+        height: 30,
         color:'#ddd',
         fontSize: 14,
     },
     rightIcon: {
-        width: '34%'
-    }
+        width: '34%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    musicPlugin: {
+
+    },
+    footerIcon: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '100%',
+    },
+    column: {
+        flex: 1,
+        alignItems: 'center',
+    },
 });
 export default styles;
