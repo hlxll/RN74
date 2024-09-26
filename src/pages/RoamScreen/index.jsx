@@ -4,13 +4,19 @@ import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
 import ShareIcon from '../../static/image/share.svg';
-// import TagSelect from 'react-native-tag-select';
+import Erji from '../../static/image/erji.svg';
+import Download from '../../static/image/xiazai.svg';
+import MoreZero from '../../static/image/shenglvehao.svg';
+import EmailIcon from '../../static/image/xinxi.svg';
+import LoveIcon from '../../static/image/aixintubiao.svg';
+
+
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
-    const [follow, setFollow] = useState(false)
-    const moveTextRef = useRef()
-    const [leftMove, setLeftMove] = useState(0)//移动宽度
-    const moveWidth = useRef(0)//获取移动文本宽度
+    const [follow, setFollow] = useState(false);
+    const moveTextRef = useRef();
+    const moveWidth = useRef(0);//获取移动文本宽度
+    const fadeAnim = useRef(new Animated.Value(0)).current;
     useEffect(()=>{
         setModalItems([
             {
@@ -26,30 +32,28 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 value: '3',
             },
         ]);
-        let ids = setInterval(()=>{
-            AutoMove()
-        },3000)
-        return () =>{
-            clearInterval(ids)
-        }
+        setTimeout(()=>{
+            AutoMove();
+        },1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
+    //!useEffect启动动画，组件还没准备好会报错
     const AutoMove = ()=>{
-        console.log(moveTextRef.current);
-        Animated.timing(leftMove, {
-            toValue: 100,
-            duration: 1000,
+        Animated.timing(fadeAnim, {
+            toValue: 10,
+            duration: 5000,
             useNativeDriver: true,
         }).start();
-    }
+    };
     const handle_toBack = ()=>{
         setShowRoam(false);
     };
-    const handleLayoutMove=(event)=>{
+    const handleLayoutMove = (event)=>{
         moveWidth.current = event.nativeEvent.layout.width;
-    }
+    };
     return(
-        <Modal visible={showRoam} 
-            animationType="slide" 
+        <Modal visible={showRoam}
+            animationType="slide"
             style={styles.roamScreen}>
             <LinearGradient
                 colors={['#066ea5', '#01334c']}
@@ -59,41 +63,69 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 <View>
                     <View style={styles.head}>
                         <ToBottom onPress={handle_toBack}
-                            style={styles.backICon} 
-                            width={20} 
+                            style={styles.backICon}
+                            width={20}
                             height={20}/>
                         {/* <TagSelect data={modelItems} type={'default'}/> */}
-                        <View style={styles.centerHead}></View>
-                        <ShareIcon width={20} 
-                            height={20} 
+                        <View style={styles.centerHead}/>
+                        <ShareIcon width={20}
+                            height={20}
                             style={styles.rightUrl}/>
                     </View>
-                    <Image source={require('../../static/image/roamBack.png')} 
+                    <Image source={require('../../static/image/roamBack.png')}
                         style={styles.roamBackImage}
-                        resizeMode='contain'/>
+                        resizeMode="contain"/>
                     <View style={styles.musicPlay}>
                         <View style={styles.leftDetail}>
-                            <View style={styles.textMove}>
-                                <Text style={{marginLeft: -leftMove, ...styles.textMoveText}} 
-                                    ref={moveTextRef} 
-                                    onLayout={handleLayoutMove}>
-                                    My songs know What You Did The Dark(Light Em Up)
-                                </Text>
+                            <View style={[styles.textMove,{
+                                opacity: fadeAnim.current,
+                            }]}>
+                                <Animated.View style={[
+                                    styles.animatedStyle,
+                                    {
+                                        translateX: fadeAnim,
+                                    },
+                                ]}>
+                                    <Text style={styles.textMoveText} numberOfLines={1}
+                                        ref={moveTextRef} onLayout={handleLayoutMove}>
+                                        My songs know What You Did The Dark(Light Em Up)
+                                    </Text>
+                                </Animated.View>
                             </View>
                             <Text style={styles.userFollow}>
                                 黄林
                                 <Text>
                                     {
-                                        follow?'关注':'>'
+                                        follow ? '关注' : '>'
                                     }
                                 </Text>
                             </Text>
                         </View>
-                        <View style={styles.rightIcon}></View>
+                        <View style={styles.rightIcon}>
+                            <View style={styles.column}>
+                                <LoveIcon width={30}
+                                height={30}/>
+                            </View>
+                            <View style={styles.column}>
+                                <EmailIcon width={30}
+                                    height={30}/>
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.musicPlugin}></View>
+                    <View style={styles.musicPlugin} id="musicPlugin" />
                     <View style={styles.footerIcon}>
-                        
+                        <View  style={styles.column}>
+                            <Erji width={20}
+                            height={20}/>
+                        </View>
+                        <View  style={styles.column}>
+                        <Download width={20}
+                            height={20}/>
+                        </View>
+                        <View  style={styles.column}>
+                        <MoreZero width={20}
+                            height={20}/>
+                        </View>
                     </View>
                 </View>
             </LinearGradient>
