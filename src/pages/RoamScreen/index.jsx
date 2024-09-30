@@ -9,14 +9,14 @@ import Download from '../../static/image/xiazai.svg';
 import MoreZero from '../../static/image/shenglvehao.svg';
 import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
-
+import TrackPlayer from 'react-native-track-player';
 
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
-    const [follow, setFollow] = useState(false);
+    const [follow, setFollow] = useState(true);
     const moveTextRef = useRef();
-    const moveWidth = useRef(0);//获取移动文本宽度
     const fadeAnim = useRef(new Animated.Value(0)).current;
+    let autoMoveId;
     useEffect(()=>{
         setModalItems([
             {
@@ -32,24 +32,64 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 value: '3',
             },
         ]);
-        setTimeout(()=>{
-            AutoMove();
-        },1000);
+        // setTimeout(()=>{
+        //     setupPlayer().then(()=>{
+        //         addTrack();
+        //     });
+        // },3000);
+        return()=>{
+            clearInterval(autoMoveId);
+        };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
-    //!useEffect启动动画，组件还没准备好会报错
-    const AutoMove = ()=>{
+    //!useEffect启动动画，组件还没准备好会报错,轮播图
+    const AutoMove = (width)=>{
         Animated.timing(fadeAnim, {
-            toValue: 10,
-            duration: 5000,
+            toValue: -width,
+            duration: 10000,
             useNativeDriver: true,
-        }).start();
+        }).start(()=>{
+            fadeAnim.setValue(0);
+        });
     };
     const handle_toBack = ()=>{
         setShowRoam(false);
     };
     const handleLayoutMove = (event)=>{
-        moveWidth.current = event.nativeEvent.layout.width;
+        let moveWidth = event.nativeEvent.layout.width;
+        if( moveWidth > 100){
+            autoMoveId = setInterval(()=>{
+                AutoMove(Math.floor(moveWidth) + 100);
+            },11000);
+        }
+    };
+    const followUser = ()=>{
+        setFollow(false);
+    };
+    const setupPlayer = async ()=>{
+        await TrackPlayer.setupPlayer().catch(err=>{
+            console.error(err);
+        });
+        await TrackPlayer.updateOptions({
+            capabilities: [
+                TrackPlayer.CAPABILITY_PLAY,
+                TrackPlayer.CAPABILITY_PAUSE,
+                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+            ],
+            compactCapabilities: [
+                TrackPlayer.CAPABILITY_PLAY,
+                TrackPlayer.CAPABILITY_PAUSE,
+            ],
+        });
+    };
+    const addTrack = async ()=>{
+        await TrackPlayer.add({
+            id: 'musicPlugin',
+            url: '../../static/music/roamVideo.mp4',
+            title: 'title',
+            artist: 'artist',
+        });
     };
     return(
         <Modal visible={showRoam}
@@ -90,25 +130,39 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                         ref={moveTextRef} onLayout={handleLayoutMove}>
                                         My songs know What You Did The Dark(Light Em Up)
                                     </Text>
+                                    <View style={styles.moveCenterView}/>
+                                    <Text style={styles.textMoveText} numberOfLines={1}
+                                        ref={moveTextRef} onLayout={handleLayoutMove}>
+                                        My songs know What You Did The Dark(Light Em Up)
+                                    </Text>
                                 </Animated.View>
                             </View>
-                            <Text style={styles.userFollow}>
-                                黄林
-                                <Text>
-                                    {
-                                        follow ? '关注' : '>'
-                                    }
+                            <View style={styles.nameFollowView}>
+                                <Text style={styles.userFollow}>
+                                    黄林&nbsp;
                                 </Text>
-                            </Text>
+                                {
+                                    follow ?
+                                    <View style={styles.userFollText}>
+                                        <Text style={styles.userFollowContent}
+                                            onPress={followUser}>关注</Text>
+                                    </View> :
+                                    <Text style={styles.userFollText}>
+                                        {'>'}
+                                    </Text>
+                                }
+                            </View>
                         </View>
                         <View style={styles.rightIcon}>
                             <View style={styles.column}>
                                 <LoveIcon width={30}
                                 height={30}/>
+                                <Text style={styles.rightTopText}>7.7w</Text>
                             </View>
                             <View style={styles.column}>
                                 <EmailIcon width={30}
                                     height={30}/>
+                                <Text style={styles.rightTopText}>999+</Text>
                             </View>
                         </View>
                     </View>

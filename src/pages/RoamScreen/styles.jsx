@@ -45,19 +45,49 @@ const styles = StyleSheet.create({
         height: 30,
         overflow:'hidden',
     },
+    animatedStyle: {
+        width: '200%',
+        flexDirection: 'row'
+    },
     textMoveText: {
-        fontSize: 16,
+        fontSize: 18,
         lineHeight: 30,
+        color: '#fff',
+    },
+    moveCenterView: {
+        width: 100,
+    },
+    nameFollowView: {
+        flexDirection: 'row',
     },
     userFollow:{
         height: 30,
         color:'#ddd',
         fontSize: 14,
     },
+    userFollText: {
+        color: '#ddd',
+        borderRadius: 10,
+        width: 40,
+        height: 20,
+        backgroundColor: '#174c6b',
+        alignItems: 'center',
+    },
+    userFollowContent: {
+        color: '#ddd'
+    },
     rightIcon: {
         width: '34%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    rightTopText: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        color: '#fff',
+        fontSize: 10,
+        backgroundColor: '#044364',
     },
     musicPlugin: {
 
