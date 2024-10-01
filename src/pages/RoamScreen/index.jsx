@@ -32,11 +32,11 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 value: '3',
             },
         ]);
-        // setTimeout(()=>{
-        //     setupPlayer().then(()=>{
-        //         addTrack();
-        //     });
-        // },3000);
+        setTimeout(()=>{
+            setupPlayer().then(()=>{
+                addTrack();
+            });
+        },3000);
         return()=>{
             clearInterval(autoMoveId);
         };
