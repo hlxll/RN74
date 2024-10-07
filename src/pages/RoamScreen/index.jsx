@@ -1,4 +1,4 @@
-import { Animated, Image, Modal, View, Text } from 'react-native';
+import { Animated, Image, Modal, View, Text, Button, Dimensions } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
@@ -10,11 +10,13 @@ import MoreZero from '../../static/image/shenglvehao.svg';
 import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
 import TrackPlayer from 'react-native-track-player';
-import Picker from 'react-native-picker-select';
+import ModelView from '../../component/ModelView';
+// import Picker from 'react-native-picker-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
     const [follow, setFollow] = useState(true);
     const moveTextRef = useRef();
+    const [modelModal, setModelModal] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     let autoMoveId;
     useEffect(()=>{
@@ -91,6 +93,9 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
             artist: 'artist',
         });
     };
+    const fun_openModelModal = ()=>{
+        setModelModal(true);
+    };
     return(
         <Modal visible={showRoam}
             animationType="slide"
@@ -106,9 +111,14 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                             style={styles.backICon}
                             width={20}
                             height={20}/>
-                            <Picker items={modelItems}/>
+                            {/* <Picker items={modelItems}/> */}
                         {/* <TagSelect data={modelItems} type={'default'}/> */}
-                        <View style={styles.centerHead}/>
+                        <View style={styles.centerHead} onPress={fun_openModelModal}>
+                            <ToBottom
+                                style={styles.backICon}
+                                width={10}
+                                height={10}/>
+                        </View>
                         <ShareIcon width={20}
                             height={20}
                             style={styles.rightUrl}/>
@@ -118,9 +128,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                         resizeMode="contain"/>
                     <View style={styles.musicPlay}>
                         <View style={styles.leftDetail}>
-                            <View style={[styles.textMove,{
-                                opacity: fadeAnim.current,
-                            }]}>
+                            <View style={[styles.textMove]}>
                                 <Animated.View style={[
                                     styles.animatedStyle,
                                     {
@@ -184,6 +192,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                     </View>
                 </View>
             </LinearGradient>
+            <ModelView visible={modelModal} callback={()=>{setModalItems(false); }}/>
         </Modal>
     );
 };
