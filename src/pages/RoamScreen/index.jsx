@@ -10,7 +10,7 @@ import MoreZero from '../../static/image/shenglvehao.svg';
 import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
 import TrackPlayer from 'react-native-track-player';
-
+import Picker from 'react-native-picker-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
     const [follow, setFollow] = useState(true);
@@ -106,6 +106,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                             style={styles.backICon}
                             width={20}
                             height={20}/>
+                            <Picker items={modelItems}/>
                         {/* <TagSelect data={modelItems} type={'default'}/> */}
                         <View style={styles.centerHead}/>
                         <ShareIcon width={20}
