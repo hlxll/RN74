@@ -39,9 +39,11 @@ function MainScreen() {
     const handleChangeInit = (type)=>{
         setInitTab(type);
     };
-    const handleCloseModal = (type)=>{
+    const handleCloseModal = (type, isClose)=>{
         setShowRoam(type);
-        navigation.navigate(initTab);
+        if(isClose){
+            navigation.navigate(initTab);
+        }
     };
     return (
         <Tab.Navigator initialRouteName={'Recommend'}>

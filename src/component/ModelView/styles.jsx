@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    modelSelectAnimated: {
+        position: 'relative',
+        top: 0,
+        width: '100%',
+        height: '100%',
+    },
     flatItem: {
         borderRadius: 10,
         width: '100%',

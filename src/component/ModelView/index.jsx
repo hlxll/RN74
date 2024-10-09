@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Button, Dimensions, FlatList, View } from 'react-native';
+import { Animated, Button, Dimensions, FlatList, Modal, View } from 'react-native';
 import styles from './styles.jsx';
 import { Text } from 'react-native-svg';
 import ToBottom from '../../static/image/xiangxia.svg';
 
 const ModelView = ({visible, callback}) =>{
-    const modelYNum = useRef(new Animated.Value(0));
+    const modelYNum = useRef(new Animated.Value(-Dimensions.get('window').height)).current;
     const [selectModel, setSelectModel] = useState(1);
     const modeldata = [
         {
@@ -51,42 +51,40 @@ const ModelView = ({visible, callback}) =>{
             id: 8,
         },
     ];
-    useEffect(()=>{
-        if(visible){
-            openModel();
-        }
-    }, [visible]);
     const openModel = () => {
-        modelYNum.current = -Dimensions.get('window').height;
-        Animated.timing(modelYNum.current, {
+        Animated.timing(modelYNum, {
             toValue: 0,
             duration: 10000,
             useNativeDriver: true,
         }).start(()=>{});
     };
-    const fun_toRoam = ()=>{
-        callback();
-    };
     const pressModel = (item)=>{
         setSelectModel(item.id);
     };
+    //动画效果不对
+    const layoutView = (event)=>{
+        let moveWidth = event.nativeEvent.layout.width;
+        if( moveWidth > 100 && visible){
+            openModel();
+        }
+    };
     return (
-        <View>
+        <View style={styles.modelSelectAnimated} onLayout={layoutView}>
             <Animated.View style={[
                 {
-                    translateY: modelYNum.current,
+                    translateY: modelYNum,
                 },
             ]}>
                 <View style={styles.modelModal}>
                     <View style={styles.model_head}>
                         <Text>x</Text>
                         <View style={styles.model_head_cneter}>
-                        <ToBottom onPress={fun_toRoam}
+                        <ToBottom onPress={callback}
                             style={styles.backICon}
                             width={10}
                             height={10}/>
                         </View>
-                        <Button>设置</Button>
+                        <Button title="设置"/>
                     </View>
                 </View>
                 <FlatList data={modeldata}
@@ -117,12 +115,12 @@ const ModelView = ({visible, callback}) =>{
                                         {item.title}
                                     </Text>
                                 </View>
-                            )
+                            );
                         })
                     }
                 </View>
             </Animated.View>
         </View>
-    )
+    );
 };
 export default ModelView;
