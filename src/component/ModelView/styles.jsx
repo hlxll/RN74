@@ -91,14 +91,24 @@ export default StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#943d21',
         borderRadius: 10,
+        flexWrap: 'wrap',
+        width: '100%'
+    },
+    modelListIndex: {
+        width: '25%',
+        alignItems: 'center',
+        marginTop: 20,
     },
     modelListItemSelect: {
         backgroundColor: 'rgba(255,255,255,0.6)',
-        width: '25%',
         alignItems: 'center',
+        width: '90%',
+        margin:'auto'
     },
     modelListItem: {
-        width: '25%',
         alignItems: 'center',
+    },
+    modelListText: {
+        color:'#fff',
     },
 });

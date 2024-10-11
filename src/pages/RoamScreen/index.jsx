@@ -11,6 +11,7 @@ import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
 import TrackPlayer from 'react-native-track-player';
 import ModelView from '../../component/ModelView';
+// import blankMp from '../../static/music/blank.mp3';
 // import Picker from 'react-native-picker-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
@@ -35,11 +36,14 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 value: '3',
             },
         ]);
-        // setTimeout(()=>{
-        //     setupPlayer().then(()=>{
-        //         addTrack();
-        //     });
-        // },3000);
+        setTimeout(()=>{
+            TrackPlayer.reset();
+            setupPlayer().then(()=>{
+                console.log('加在成功');
+                
+                addTrack();
+            });
+        },3000);
         return()=>{
             clearInterval(autoMoveId);
         };
@@ -76,7 +80,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
     };
     const addTrack = async ()=>{
         var track1 = {
-            url: 'http://example.com/avaritia.mp3', // Load media from the network
+            url: '../../static/music/blank.mp3', // Load media from the network
             title: 'Avaritia',
             artist: 'deadmau5',
             album: 'while(1<2)',

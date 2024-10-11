@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, FlatList, Text, View } from 'react-native';
+import { Animated, Dimensions, FlatList, Text, TouchableHighlight, View } from 'react-native';
 import styles from './styles.jsx';
 import ToBottom from '../../static/image/xiangxia.svg';
-
+import Fangsongmoshi from '../../static/image/fangsongmoshi.svg'
+import Huankuai from '../../static/image/huankuai.svg';
+import Crouing from '../../static/image/crouing.svg';
+import Yundong from '../../static/image/yundong.svg';
+import Zhumian from '../../static/image/zhumian.svg'
+const {height} = Dimensions.get('window');
 const ModelView = ({visible, callback}) =>{
     const modelYNum = useRef(new Animated.Value(-Dimensions.get('window').height)).current;
     const [selectModel, setSelectModel] = useState(1);
@@ -25,27 +30,27 @@ const ModelView = ({visible, callback}) =>{
     ];
     const modelList = [
         {
-            icon: <ToBottom/>,
+            icon: <Crouing width={30} height={30}/>,
             title: '伤感',
             id: 4,
         },
         {
-            icon: <ToBottom/>,
+            icon: <Yundong width={30} height={30}/>,
             title: '运动',
             id: 5,
         },
         {
-            icon: <ToBottom/>,
+            icon: <Zhumian width={30} height={30}/>,
             title: '助眠',
             id: 6,
         },
         {
-            icon: <ToBottom/>,
+            icon: <Fangsongmoshi width={30} height={30}/>,
             title: '放松',
             id: 7,
         },
         {
-            icon: <ToBottom/>,
+            icon: <Huankuai width={30} height={30}/>,
             title: '欢快',
             id: 8,
         },
@@ -75,7 +80,7 @@ const ModelView = ({visible, callback}) =>{
                 },
             ]}>
                 <View style={styles.modelModal}>
-                    <Text style={styles.closeIcon}>x</Text>
+                    <Text style={styles.closeIcon} onPress={callback}>x</Text>
                     <View style={styles.model_head_cneter}>
                         <Text style={styles.centerText}>
                             私人漫游 . 熟悉模式&nbsp;
@@ -97,14 +102,16 @@ const ModelView = ({visible, callback}) =>{
                                     styles.flatItemSelect :
                                     styles.flatItem}
                                 key={index}
-                                onPress={()=>{pressModel(item);}}>
+                                >
                                 <View style={styles.flattitle}>
-                                    <Text style={styles.flatItemTitle}>
+                                    <Text style={styles.flatItemTitle}
+                                    onPress={()=>{pressModel(item);}}>
                                         {item.title}
                                     </Text>
                                 </View>
                                 <View style={styles.flattitle}>
-                                    <Text style={styles.flatItemText}>
+                                    <Text style={styles.flatItemText}
+                                    onPress={()=>{pressModel(item);}}>
                                         {item.text}
                                     </Text>
                                 </View>
@@ -112,19 +119,27 @@ const ModelView = ({visible, callback}) =>{
                         );
                     }}/>
                 <Text style={styles.trainModel}>场景模式</Text>
-                <View style={styles.modelList}>
+                <View style={[
+                    styles.modelList,
+                    {
+                        height: height - 450,
+                    },
+                ]}>
                     {
                         modelList.map((item, index) => {
                             return (
-                                <View key={index} onPress={()=>{pressModel(item);}}
-                                    style={selectModel === item.id ? styles.modelListItemSelect : styles.modelListItem}>
-                                    <View>
-                                        {item.icon}
+                                <TouchableHighlight style={styles.modelListIndex} key={item.id}
+                                    onPress={()=>{pressModel(item);}}>
+                                     <View key={index}
+                                        style={selectModel === item.id ? styles.modelListItemSelect : styles.modelListItem}>
+                                        <View>
+                                            {item.icon}
+                                        </View>
+                                        <Text style={styles.modelListText}>
+                                            {item.title}
+                                        </Text>
                                     </View>
-                                    <Text>
-                                        {item.title}
-                                    </Text>
-                                </View>
+                                </TouchableHighlight>
                             );
                         })
                     }
