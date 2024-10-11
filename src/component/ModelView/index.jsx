@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Button, Dimensions, FlatList, Modal, View } from 'react-native';
+import { Animated, Dimensions, FlatList, Text, View } from 'react-native';
 import styles from './styles.jsx';
-import { Text } from 'react-native-svg';
 import ToBottom from '../../static/image/xiangxia.svg';
 
 const ModelView = ({visible, callback}) =>{
@@ -54,7 +53,7 @@ const ModelView = ({visible, callback}) =>{
     const openModel = () => {
         Animated.timing(modelYNum, {
             toValue: 0,
-            duration: 10000,
+            duration: 1000,
             useNativeDriver: true,
         }).start(()=>{});
     };
@@ -76,32 +75,43 @@ const ModelView = ({visible, callback}) =>{
                 },
             ]}>
                 <View style={styles.modelModal}>
-                    <View style={styles.model_head}>
-                        <Text>x</Text>
-                        <View style={styles.model_head_cneter}>
+                    <Text style={styles.closeIcon}>x</Text>
+                    <View style={styles.model_head_cneter}>
+                        <Text style={styles.centerText}>
+                            私人漫游 . 熟悉模式&nbsp;
+                        </Text>
                         <ToBottom onPress={callback}
-                            style={styles.backICon}
+                            style={styles.centerIcon}
                             width={10}
                             height={10}/>
-                        </View>
-                        <Button title="设置"/>
+                    </View>
+                    <View style={styles.rightSet}>
+                        <Text style={styles.setText}>设置</Text>
                     </View>
                 </View>
                 <FlatList data={modeldata}
                     renderItem={({item, index})=>{
                         return (
-                            <View style={selectModel === item.id ? styles.flatItem : styles.flatItemSelect} key={index}
-                            onPress={()=>{pressModel(item);}}>
+                            <View style={
+                                    selectModel === item.id ?
+                                    styles.flatItemSelect :
+                                    styles.flatItem}
+                                key={index}
+                                onPress={()=>{pressModel(item);}}>
                                 <View style={styles.flattitle}>
-                                    <Text style={styles.flatItemTitle}>{item.title}</Text>
+                                    <Text style={styles.flatItemTitle}>
+                                        {item.title}
+                                    </Text>
                                 </View>
                                 <View style={styles.flattitle}>
-                                    <Text style={styles.flatItemText}>{item.text}</Text>
+                                    <Text style={styles.flatItemText}>
+                                        {item.text}
+                                    </Text>
                                 </View>
                             </View>
                         );
                     }}/>
-                <Text>场景模式</Text>
+                <Text style={styles.trainModel}>场景模式</Text>
                 <View style={styles.modelList}>
                     {
                         modelList.map((item, index) => {

@@ -13,13 +13,19 @@ const styles = StyleSheet.create({
     backICon: {
         position: 'relative',
         left: 20,
-        zIndex: 99
+        zIndex: 99,
     },
     centerHead: {
         width: '100%',
         paddingLeft: 20,
         paddingRight: 20,
-        height: 40,
+        height: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    centertext: {
+        color: '#7cacc7',
     },
     rightUrl: {
         position: 'relative',
@@ -47,7 +53,7 @@ const styles = StyleSheet.create({
     },
     animatedStyle: {
         width: '200%',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     textMoveText: {
         fontSize: 18,
