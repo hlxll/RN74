@@ -19,6 +19,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
     const moveTextRef = useRef();
     // 关闭弹窗，这里初始化
     const [modelModal, setModelModal] = useState(false);
+    const [isPlayerInit, setIsPlayerInit] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     let autoMoveId;
     useEffect(()=>{
@@ -36,13 +37,12 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 value: '3',
             },
         ]);
-        setTimeout(()=>{
-            TrackPlayer.reset();
-            setupPlayer().then(()=>{
-                console.log('加在成功');
-                
-                addTrack();
-            });
+        setTimeout(async ()=>{
+            if(!isPlayerInit){
+                await setupPlayer();
+            }
+            console.log('加在成功');
+            addTrack();
         },3000);
         return()=>{
             clearInterval(autoMoveId);
@@ -74,13 +74,15 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
         setFollow(false);
     };
     const setupPlayer = async ()=>{
+        setIsPlayerInit(true);
         await TrackPlayer.setupPlayer().catch(err=>{
             console.error(err);
         });
     };
     const addTrack = async ()=>{
+        await TrackPlayer.pause();
         var track1 = {
-            url: '../../static/music/blank.mp3', // Load media from the network
+            url: require('../../static/music/warning.mp3'), // Load media from the network
             title: 'Avaritia',
             artist: 'deadmau5',
             album: 'while(1<2)',
@@ -94,6 +96,14 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
     const fun_openModelModal = ()=>{
         clearInterval(autoMoveId);
         setModelModal(true);
+    };
+    const playTrack = async ()=>{
+        let state = await TrackPlayer.getPlaybackState();
+        if(state === 'ended'){
+            await TrackPlayer.retry();
+            return;
+        }
+        await TrackPlayer.play();
     };
     return(
         <Modal visible={showRoam}
@@ -180,7 +190,9 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                     </View>
                                 </View>
                             </View>
-                            <View style={styles.musicPlugin} id="musicPlugin" />
+                            <View style={styles.musicPlugin} id="musicPlugin">
+                                <Button onPress={playTrack} title="player"/>
+                            </View>
                             <View style={styles.footerIcon}>
                                 <View  style={styles.column}>
                                     <Erji width={20}
