@@ -9,9 +9,9 @@ import Download from '../../static/image/xiazai.svg';
 import MoreZero from '../../static/image/shenglvehao.svg';
 import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {useTrackPlayerEvents} from 'react-native-track-player';
 import ModelView from '../../component/ModelView';
-// import blankMp from '../../static/music/blank.mp3';
+import MusicPlayer from '../../component/MusicPlayer';
 // import Picker from 'react-native-picker-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
@@ -19,7 +19,6 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
     const moveTextRef = useRef();
     // 关闭弹窗，这里初始化
     const [modelModal, setModelModal] = useState(false);
-    const [isPlayerInit, setIsPlayerInit] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     let autoMoveId;
     useEffect(()=>{
@@ -37,13 +36,6 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                 value: '3',
             },
         ]);
-        setTimeout(async ()=>{
-            if(!isPlayerInit){
-                await setupPlayer();
-            }
-            console.log('加在成功');
-            addTrack();
-        },3000);
         return()=>{
             clearInterval(autoMoveId);
         };
@@ -72,26 +64,6 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
     };
     const followUser = ()=>{
         setFollow(false);
-    };
-    const setupPlayer = async ()=>{
-        setIsPlayerInit(true);
-        await TrackPlayer.setupPlayer().catch(err=>{
-            console.error(err);
-        });
-    };
-    const addTrack = async ()=>{
-        await TrackPlayer.pause();
-        var track1 = {
-            url: require('../../static/music/warning.mp3'), // Load media from the network
-            title: 'Avaritia',
-            artist: 'deadmau5',
-            album: 'while(1<2)',
-            genre: 'Progressive House, Electro House',
-            date: '2014-05-20T07:00:00+00:00', // RFC 3339
-            artwork: 'http://example.com/cover.png', // Load artwork from the network
-            duration: 402, // Duration in seconds
-        };
-        await TrackPlayer.add([track1]);
     };
     const fun_openModelModal = ()=>{
         clearInterval(autoMoveId);
@@ -191,7 +163,8 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                 </View>
                             </View>
                             <View style={styles.musicPlugin} id="musicPlugin">
-                                <Button onPress={playTrack} title="player"/>
+                                <MusicPlayer/>
+                                {/* <Button onPress={playTrack} title="player"/> */}
                             </View>
                             <View style={styles.footerIcon}>
                                 <View  style={styles.column}>
