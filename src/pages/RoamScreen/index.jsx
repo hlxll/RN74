@@ -9,9 +9,9 @@ import Download from '../../static/image/xiazai.svg';
 import MoreZero from '../../static/image/shenglvehao.svg';
 import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
-import TrackPlayer, {useTrackPlayerEvents} from 'react-native-track-player';
 import ModelView from '../../component/ModelView';
-import MusicPlayer from '../../component/MusicPlayer';
+import MusicPlayer from '../../container/MusicPlayer';
+import AudioListView from '../../component/AudioListView';
 // import Picker from 'react-native-picker-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
@@ -20,6 +20,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
     // 关闭弹窗，这里初始化
     const [modelModal, setModelModal] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
+    const [audioList, setAudioList] = useState(false);
     let autoMoveId;
     useEffect(()=>{
         setModalItems([
@@ -69,13 +70,8 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
         clearInterval(autoMoveId);
         setModelModal(true);
     };
-    const playTrack = async ()=>{
-        let state = await TrackPlayer.getPlaybackState();
-        if(state === 'ended'){
-            await TrackPlayer.retry();
-            return;
-        }
-        await TrackPlayer.play();
+    const clickMusicPlay = (type)=>{
+
     };
     return(
         <Modal visible={showRoam}
@@ -143,7 +139,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                                 <Text style={styles.userFollowContent}
                                                     onPress={followUser}>关注</Text>
                                             </View> :
-                                            <Text style={styles.userFollText}>
+                                            <Text style={styles.userFollTextIcon}>
                                                 {'>'}
                                             </Text>
                                         }
@@ -163,7 +159,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                 </View>
                             </View>
                             <View style={styles.musicPlugin} id="musicPlugin">
-                                <MusicPlayer/>
+                                <MusicPlayer onCallback={clickMusicPlay}/>
                                 {/* <Button onPress={playTrack} title="player"/> */}
                             </View>
                             <View style={styles.footerIcon}>
@@ -182,6 +178,10 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                             </View>
                         </View>
                     </LinearGradient>
+                }
+                {
+                    audioList ?
+                    <AudioListView/> : ''
                 }
         </Modal>
     );

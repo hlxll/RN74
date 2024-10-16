@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     },
     roamBackImage: {
         width: '100%',
-        height: '50%',
-        resizeMode:'contain'
+        height: '60%',
+        resizeMode:'contain',
     },
     musicPlay: {
         marginTop: 'auto',
@@ -76,10 +76,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: 40,
         height: 20,
-        backgroundColor: '#174c6b',
+        backgroundColor: '#463842',
         alignItems: 'center',
     },
     userFollowContent: {
+        color: '#ddd',
+    },
+    userFollTextIcon: {
         color: '#ddd'
     },
     rightIcon: {
@@ -96,13 +99,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#044364',
     },
     musicPlugin: {
-
+        marginTop: 'auto',
     },
     footerIcon: {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         width: '100%',
+        height: 40,
     },
     column: {
         flex: 1,

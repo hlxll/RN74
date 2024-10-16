@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        height: 40,
+        height: 100,
     },
     linkIcon: {
         transform: [{rotate: '45deg'}],
