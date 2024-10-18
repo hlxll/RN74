@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
 import { useDispatch, useSelector } from 'react-redux';
 import { increment } from '../../model/reducers';
-const MusicPlayer = () =>{
+const MusicPlayer = (props) =>{
     const [num, setNum] = useState(0);
     const [isPlayerInit, setIsPlayerInit] = useState(false);
     const [playerStatus, setPlayerStatus] = useState(false);//开始停止
@@ -87,6 +87,9 @@ const MusicPlayer = () =>{
         setPlayerStatus(false);
         TrackPlayer.pause();
     };
+    const openAudioList = ()=>{
+        props.onCallback('openAudioList');
+    };
     return (
         <View>
             <Slider
@@ -108,7 +111,7 @@ const MusicPlayer = () =>{
                     <StartIcon width={25} height={25} onPress={startPlayer}/>
                 }
                 <BackRow width={25} height={25} style={styles.rightNext}/>
-                <ListIcon width={25} height={25}/>
+                <ListIcon width={25} height={25} onPress={openAudioList}/>
             </View>
         </View>
     );

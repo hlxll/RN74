@@ -5,6 +5,9 @@ const styles = StyleSheet.create({
         height: '100%',
         padding: 10,
     },
+    linearGradModal: {
+        height: '100%',
+    },
     head:{
         height: 40,
         justifyContent: 'center',
@@ -111,6 +114,10 @@ const styles = StyleSheet.create({
     column: {
         flex: 1,
         alignItems: 'center',
+    },
+    audioViewModal: {
+        width: '100%',
+        height: '100%',
     },
 });
 export default styles;

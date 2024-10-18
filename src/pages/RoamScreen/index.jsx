@@ -11,7 +11,7 @@ import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
 import ModelView from '../../component/ModelView';
 import MusicPlayer from '../../container/MusicPlayer';
-import AudioListView from '../../component/AudioListView';
+import AudioListView from '../../component/AudioListView/index';
 // import Picker from 'react-native-picker-select';
 const RoamScreen = ({showRoam, setShowRoam})=> {
     const [modelItems, setModalItems] = useState([]);
@@ -71,7 +71,9 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
         setModelModal(true);
     };
     const clickMusicPlay = (type)=>{
-
+        if(type === 'openAudioList'){
+            setAudioList(true);
+        }
     };
     return(
         <Modal visible={showRoam}
@@ -86,7 +88,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                         start={{x: 0, y: 0}}
                         end={{x: 1, y: 1}}
                         style={styles.roamScreen}>
-                        <View>
+                        <View style={styles.linearGradModal}>
                             <View style={styles.head}>
                                 <ToBottom onPress={handle_toBack}
                                     style={styles.backICon}
@@ -177,11 +179,11 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                 </View>
                             </View>
                         </View>
+                        {
+                            audioList ?
+                            <AudioListView style={styles.audioViewModal}/> : ''
+                        }
                     </LinearGradient>
-                }
-                {
-                    audioList ?
-                    <AudioListView/> : ''
                 }
         </Modal>
     );
