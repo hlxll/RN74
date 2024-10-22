@@ -75,8 +75,12 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
             setAudioList(true);
         }
     };
+    const closeAudioList = ()=>{
+        setAudioList(false);
+    }
     return(
         <Modal visible={showRoam}
+        transparent={true}
             animationType="slide"
             style={styles.roamScreen}>
                 {
@@ -88,7 +92,8 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                         start={{x: 0, y: 0}}
                         end={{x: 1, y: 1}}
                         style={styles.roamScreen}>
-                        <View style={styles.linearGradModal}>
+                        <View style={styles.linearGradModal}
+                        >
                             <View style={styles.head}>
                                 <ToBottom onPress={handle_toBack}
                                     style={styles.backICon}
@@ -105,6 +110,7 @@ const RoamScreen = ({showRoam, setShowRoam})=> {
                                         height={10}/>
                                 </View>
                                 <ShareIcon width={20}
+                                onPress={closeAudioList}
                                     height={20}
                                     style={styles.rightUrl}/>
                             </View>

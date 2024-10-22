@@ -26,6 +26,7 @@ const AudioListView = () =>{
         })
     ).current;
 
+
     const {height, width} = Dimensions.get('window');
     const initAnimated = (event)=>{
         if(event.nativeEvent.layout.width < 100){
@@ -35,56 +36,56 @@ const AudioListView = () =>{
             toValue: -height * 0.7,
             duration: 3000,
             useNativeDriver: true,
-        }).start(()=>{
-            // animatedRef.setValue(0);
-        });
+        }).start(()=>{});
     };
     return(
-        <Animated.View
-                style={[
-                    styles.audioAnimated,
-                    {
-                        width: width,
-                        height: height * 0.7 + 20,
-                        transform: [{translateY: pan.y}],
-                    },
-                ]}
-                {...panResponder.panHandlers}>
-            <View style={styles.AudioListView}
-                onLayout={initAnimated}>
-                    <LinearGradient
-                        colors={['#344094', '#a02843']}
-                        start={{x: 0, y: 0}}
-                        end={{x: 0, y: 1 }}
-                        style={styles.audioHead}>
-                        <View style={styles.audioListHead}>
-                            <View style={styles.leftText}>
-                                <Text style={styles.leftTextOne}>
-                                    开启私人DJ，感受陪伴听歌
-                                </Text>
-                                <Text style={styles.leftTextTwo}>
-                                    沉浸式感受雨天氛围感</Text>
-                            </View>
-                            <View style={styles.startAudio}>
-                                <Text style={styles.startAudioText}>
-                                    开启
-                                </Text>
-                            </View>
-                        </View>
-                    </LinearGradient>
-                    <View style={[
-                        styles.autoListContent,
+        <View style={styles.container}>
+            <Animated.View
+                    style={[
+                        styles.audioAnimated,
                         {
-                            height: height * 0.7 - 150,
+                            width: width,
+                            height: height * 0.7 + 20,
+                            transform: [{translateY: pan.y}],
                         },
-                    ]}>
-                        <View style={styles.moveIcon}/>
-                            <View style={styles.audioContent}>
+                    ]}
+                    {...panResponder.panHandlers}>
+                <View style={styles.AudioListView}
+                    onLayout={initAnimated}>
+                        <LinearGradient
+                            colors={['#344094', '#a02843']}
+                            start={{x: 0, y: 0}}
+                            end={{x: 0, y: 1 }}
+                            style={styles.audioHead}>
+                            <View style={styles.audioListHead}>
+                                <View style={styles.leftText}>
+                                    <Text style={styles.leftTextOne}>
+                                        开启私人DJ，感受陪伴听歌
+                                    </Text>
+                                    <Text style={styles.leftTextTwo}>
+                                        沉浸式感受雨天氛围感</Text>
+                                </View>
+                                <View style={styles.startAudio}>
+                                    <Text style={styles.startAudioText}>
+                                        开启
+                                    </Text>
+                                </View>
+                            </View>
+                        </LinearGradient>
+                        <View style={[
+                            styles.autoListContent,
+                            {
+                                height: height * 0.7 - 150,
+                            },
+                        ]}>
+                            <View style={styles.moveIcon}/>
+                                <View style={styles.audioContent}>
 
+                            </View>
                         </View>
-                    </View>
-            </View>
-        </Animated.View>
+                </View>
+            </Animated.View>
+        </View>
     );
 };
 export default AudioListView;

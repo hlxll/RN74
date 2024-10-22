@@ -1,12 +1,27 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+    container: {
+        
+    },
+    titleText: {
+        fontSize: 14,
+        lineHeight: 24,
+        fontWeight: "bold"
+      },
+      box: {
+        height: 150,
+        width: 150,
+        backgroundColor: "blue",
+        borderRadius: 5
+      },
     audioAnimated: {
         marginLeft: -10,
     },
     AudioListView: {
         width: '100%',
         height: '100%',
+        backgroundColor: 'red'
     },
     audioHead: {
         borderRadius: 20,
