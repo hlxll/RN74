@@ -1,19 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
-        
-    },
     titleText: {
         fontSize: 14,
         lineHeight: 24,
-        fontWeight: "bold"
+        fontWeight: 'bold',
       },
       box: {
         height: 150,
         width: 150,
-        backgroundColor: "blue",
-        borderRadius: 5
+        backgroundColor: 'blue',
+        borderRadius: 5,
       },
     audioAnimated: {
         marginLeft: -10,
@@ -21,7 +18,6 @@ const styles = StyleSheet.create({
     AudioListView: {
         width: '100%',
         height: '100%',
-        backgroundColor: 'red'
     },
     audioHead: {
         borderRadius: 20,
@@ -31,7 +27,7 @@ const styles = StyleSheet.create({
     audioListHead: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 160
+        height: 160,
     },
     leftText: {
         width: '60%',
@@ -41,7 +37,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     leftTextTwo: {
-        color: 'rgba(255,255,255,0.8)'
+        color: 'rgba(255,255,255,0.8)',
     },
     startAudio: {
         width: 70,
@@ -61,14 +57,16 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
     },
+    moveView: {
+        height: 25,
+        alignItems:'center',
+        justifyContent: 'center',
+    },
     moveIcon: {
         height: 4,
         width: 30,
         backgroundColor: '#ddd',
         borderRadius: 2,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        marginTop: 10,
-    }
+    },
 });
 export default styles;

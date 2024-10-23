@@ -2,39 +2,65 @@ import { View, Animated, PanResponder, Dimensions, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
-const AudioListView = () =>{
-    const pan = useRef(new Animated.ValueXY()).current;
+import { useDispatch } from 'react-redux';
+import { setAudioListOpen } from '../../model/reducers';
 
-    const panResponder = useRef(
-        PanResponder.create({
-        onMoveShouldSetPanResponder: () => true,
-        onPanResponderGrant: () => {
+const AudioListView = () =>{
+    const {height, width} = Dimensions.get('window');
+    const dispatch = useDispatch();
+    const pan = useRef(new Animated.ValueXY()).current;
+    let nowY = '';
+    pan.addListener(function({x, y}){
+        if(y > (-height * 0.5) && nowY < y){
             pan.setOffset({
                 x: pan.x._value,
-                y: pan.y._value
+                y: 0,
             });
-        },
-        onPanResponderMove: Animated.event(
-            [
-            null,
-            { dx: pan.x, dy: pan.y }
-            ]
-        ),
-        onPanResponderRelease: () => {
-            pan.flattenOffset();
+            dispatch(setAudioListOpen());
         }
+        nowY = y;
+    });
+    useEffect(()=>{
+        setTimeout(()=>{
+            initAnimated();
+        },100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+    const panResponder = useRef(
+        PanResponder.create({
+            onMoveShouldSetPanResponder: () => true,
+            onPanResponderGrant: () => {
+                pan.setOffset({
+                    x: pan.x._value,
+                    y: pan.y._value,
+                });
+                pan.setValue({
+                    x: 0,
+                    y: 0,
+                });
+            },
+            onPanResponderMove: Animated.event(
+                [
+                    null,
+                    { dx: pan.x, dy: pan.y },
+                ],
+                {
+                    useNativeDriver: false,
+                }
+            ),
+            onPanResponderRelease: (evt, gest) => {
+                if(pan.y < (-(height * 0.5))){
+                    console.log('恢复');
+                    initAnimated(500);
+                }
+                pan.flattenOffset();
+            },
         })
     ).current;
-
-
-    const {height, width} = Dimensions.get('window');
-    const initAnimated = (event)=>{
-        if(event.nativeEvent.layout.width < 100){
-            return;
-        }
+    const initAnimated = (time)=>{
         Animated.timing(pan.y, {
             toValue: -height * 0.7,
-            duration: 3000,
+            duration: time || 3000,
             useNativeDriver: true,
         }).start(()=>{});
     };
@@ -49,9 +75,8 @@ const AudioListView = () =>{
                             transform: [{translateY: pan.y}],
                         },
                     ]}
-                    {...panResponder.panHandlers}>
-                <View style={styles.AudioListView}
-                    onLayout={initAnimated}>
+                    >
+                <View style={styles.AudioListView}>
                         <LinearGradient
                             colors={['#344094', '#a02843']}
                             start={{x: 0, y: 0}}
@@ -78,9 +103,12 @@ const AudioListView = () =>{
                                 height: height * 0.7 - 150,
                             },
                         ]}>
-                            <View style={styles.moveIcon}/>
-                                <View style={styles.audioContent}>
-
+                            <View style={styles.moveView}
+                                {...panResponder.panHandlers}>
+                                <View style={styles.moveIcon}/>
+                            </View>
+                            <View style={styles.audioContent}>
+                                
                             </View>
                         </View>
                 </View>

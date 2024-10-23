@@ -2,11 +2,10 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import RecommendScreen from '../RecommendScreen';
 import DiscoverScreen from '../DiscoverScreen';
-import RoamScreen from '../RoamScreen';
 import DynamicScreen from '../DynamicScreen';
 import OwnScreen from '../OwnScreen';
 import { View, StyleSheet } from 'react-native';
@@ -22,29 +21,28 @@ import Recommend_b from '../../static/image/recommend_b.svg';
 import Roam_b from '../../static/image/roam_b.svg';
 import Wode_b from '../../static/image/wode_b.svg';
 import { useNavigation } from '@react-navigation/native';
-
+import ModalScreen from '../ModalScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import {setScreen, setMainState} from '../../model/reducers';
 const Tab = createBottomTabNavigator();
-function MainScreen() {
-    const [initTab, setInitTab] = useState('Recommend');
-    const [showRoam, setShowRoam] = useState(false);
+const MainScreen = ()=> {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
-    const RoamModal = (props)=>{
-        return(
-            <RoamScreen {...props} showRoam={showRoam} setShowRoam={handleCloseModal}/>
-        );
-    };
-    const handleOpenModal = ()=>{
-        setShowRoam(true);
-    };
+    const {mainStateScreen, isChangeScreen} = useSelector(state => {
+        return state.playerReducer;
+    });
     const handleChangeInit = (type)=>{
-        setInitTab(type);
+        dispatch(setMainState({
+            type,
+        }));
     };
-    const handleCloseModal = (type, isClose)=>{
-        setShowRoam(type);
-        if(isClose){
-            navigation.navigate(initTab);
+    useEffect(()=>{
+        if(!isChangeScreen){
+            navigation.navigate({
+                name: mainStateScreen,
+            });
         }
-    };
+    },[mainStateScreen, isChangeScreen, navigation]);
     return (
         <Tab.Navigator initialRouteName={'Recommend'}>
             <Tab.Screen name="Recommend" component={RecommendScreen}
@@ -85,9 +83,14 @@ function MainScreen() {
                 tabBarInactiveTintColor:'#000',
                 headerShown: false,
                 }}/>
-            <Tab.Screen name="roam" component={RoamModal}
+            <Tab.Screen name="roam" component={ModalScreen}
+                initialParams={{
+                    type: 'roamScreen',
+                }}
                 listeners={{
-                    tabPress: handleOpenModal,
+                    tabPress: ()=>{
+                        dispatch(setScreen());
+                    },
                 }}
                 options={{
                     title: '漫游',
