@@ -90,6 +90,8 @@ const RoamScreen = (props)=> {
     };
     const closeAudioList = ()=>{
         setAudioList(false);
+        console.log('关闭');
+        
     };
     return(
         <View>
@@ -120,12 +122,12 @@ const RoamScreen = (props)=> {
                                     height={10}/>
                             </View>
                             <ShareIcon width={20}
-                            onPress={closeAudioList}
                                 height={20}
                                 style={styles.rightUrl}/>
                         </View>
                         <Image source={require('../../static/image/roamBack.png')}
                             style={styles.roamBackImage}
+                            onPress={closeAudioList}
                             resizeMode="contain"/>
                         <View style={styles.musicPlay}>
                             <View style={styles.leftDetail}>
