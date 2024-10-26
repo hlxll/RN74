@@ -119,5 +119,30 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    downloadModalView: {
+        backgroundColor: '#fff',
+        width: '90%',
+        margin: 'auto',
+        marginBottom: 20,
+        borderRadius: 20,
+        alignItems: 'center',
+        padding: 20
+    },
+    tipText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#000',
+    },
+    doanBtnView: {
+        width: '80%',
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
+    downloadBtnText: {
+        backgroundColor: 'red',
+    },
+    doanloadText: {
+        color: '#2b5d99'
+    },
 });
 export default styles;

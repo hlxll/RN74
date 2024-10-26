@@ -1,4 +1,4 @@
-import { Animated, Image, Modal, View, Text, Button, Dimensions, Alert } from 'react-native';
+import { Animated, Image, Modal, View, Text, Button } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
@@ -9,6 +9,7 @@ import Download from '../../static/image/xiazai.svg';
 import MoreZero from '../../static/image/shenglvehao.svg';
 import EmailIcon from '../../static/image/xinxi.svg';
 import LoveIcon from '../../static/image/aixintubiao.svg';
+import DownloadOpen from '../../static/image/downloadIcon.svg';
 import ModelView from '../../component/ModelView';
 import MusicPlayer from '../../container/MusicPlayer';
 import AudioListView from '../../component/AudioListView/index';
@@ -16,11 +17,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen, setAudioListOpen } from '../../model/reducers';
 // import Picker from 'react-native-picker-select';
+import { fetch } from "@react-native-community/netinfo";
 const RoamScreen = (props)=> {
     const dispatch = useDispatch();
     const {audioListOpen} = useSelector(state=>{
         return state.playerReducer;
-    })
+    });
     const [modelItems, setModalItems] = useState([]);
     const [follow, setFollow] = useState(true);
     const moveTextRef = useRef();
@@ -28,6 +30,7 @@ const RoamScreen = (props)=> {
     const [modelModal, setModelModal] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [audioList, setAudioList] = useState(false);
+    const [downloadOpen, setDownloadOpen] = useState(false);
     const navigation = useNavigation();
     let autoMoveId;
     useEffect(()=>{
@@ -52,7 +55,7 @@ const RoamScreen = (props)=> {
     },[]);
     useEffect(()=>{
         setAudioList(audioListOpen);
-    }, [audioListOpen])
+    }, [audioListOpen]);
     //!useEffect启动动画，组件还没准备好会报错,轮播图
     const AutoMove = (width)=>{
         Animated.timing(fadeAnim, {
@@ -91,7 +94,15 @@ const RoamScreen = (props)=> {
     const closeAudioList = ()=>{
         setAudioList(false);
         console.log('关闭');
-        
+    };
+    const openDownloadModal = ()=>{
+        fetch().then(state => {
+            if(state.type === 'wifi'){
+
+            }else{
+                setDownloadOpen(true);
+            }
+        });
     };
     return(
         <View>
@@ -189,7 +200,8 @@ const RoamScreen = (props)=> {
                             </View>
                             <View  style={styles.column}>
                             <Download width={20}
-                                height={20}/>
+                                height={20}
+                                onPress={openDownloadModal}/>
                             </View>
                             <View  style={styles.column}>
                             <MoreZero width={20}
@@ -203,6 +215,24 @@ const RoamScreen = (props)=> {
                     }
                 </LinearGradient>
             }
+            <Modal
+                visible={downloadOpen}
+                transparent={true}
+                animationType="none">
+                <View style={styles.downloadModalView}>
+                    <DownloadOpen width={50}/>
+                    <Text style={styles.tipText}>流量提醒</Text>
+                    <Text>
+                        当前处于非WIFI网络，下载将消耗较多流量,是否使用流量下载?
+                    </Text>
+                    <View style={styles.doanBtnView}>
+                        <Button title='免流下载'
+                            color="red"
+                            style={styles.downloadBtnText}/>
+                    </View>
+                    <Text style={styles.doanloadText}>使用流量下载</Text>
+                </View>
+            </Modal>
         </View>
     );
 };
