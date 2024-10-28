@@ -1,4 +1,4 @@
-import { Animated, Image, Modal, View, Text, Button } from 'react-native';
+import { Animated, Image, Modal, View, Text, Button, PermissionsAndroid, Platform } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import ToBottom from '../../static/image/xiangxia.svg';
 import styles from './styles';
@@ -16,8 +16,9 @@ import AudioListView from '../../component/AudioListView/index';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen, setAudioListOpen } from '../../model/reducers';
-// import Picker from 'react-native-picker-select';
-import { fetch } from "@react-native-community/netinfo";
+import RNFetchBlob from 'rn-fetch-blob';
+import { fetch } from '@react-native-community/netinfo';
+import { downloadFile, MainBundlePath, DocumentDirectoryPath } from 'react-native-fs';
 const RoamScreen = (props)=> {
     const dispatch = useDispatch();
     const {audioListOpen} = useSelector(state=>{
@@ -95,10 +96,68 @@ const RoamScreen = (props)=> {
         setAudioList(false);
         console.log('关闭');
     };
+    //请求权限
+    const requestStoragePermission = async ()=>{
+        if(Platform.OS === 'android'){
+            try{
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'Storage Permission Needed',
+                        message: 'this app needs access to your storage',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                    }
+                );
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            }catch(err){
+                console.log(err);
+                return false;
+            }
+        }else{
+            return true;
+        }
+    };
+    const downloadMp3ToGallery = async (url) => {
+        const hasPermission = await requestStoragePermission();
+
+        if (!hasPermission) {
+          alert('Storage permission is required to download the file.');
+          return;
+        }
+
+        const { config, fs } = RNFetchBlob;
+        const date = new Date();
+        const PictureDir = fs.dirs.PictureDir; // 获取设备上的图片目录
+        const filename = `music_${Math.floor(date.getTime() + date.getSeconds() / 2)}.mp3`;
+        const filePath = `${PictureDir}/${filename}`;
+
+        config({
+          fileCache: true,
+          appendExt: 'mp3',
+          addAndroidDownloads: {
+            useDownloadManager: true, // 使用 Android 的下载管理器
+            notification: true,
+            path: filePath,
+            description: 'Downloading mp3.',
+          },
+        })
+        .fetch('GET', url)
+        .then((res) => {
+          console.log('The file saved to ', res.path());
+          // 文件已经下载完，并保存到相册
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
     const openDownloadModal = ()=>{
         fetch().then(state => {
-            if(state.type === 'wifi'){
-
+            if(true || state.type === 'wifi'){
+                //只可以下载http或https的资源
+                const mp3URL = '../../static/music/warning.mp3';
+                downloadMp3ToGallery(mp3URL);
             }else{
                 setDownloadOpen(true);
             }
@@ -226,7 +285,7 @@ const RoamScreen = (props)=> {
                         当前处于非WIFI网络，下载将消耗较多流量,是否使用流量下载?
                     </Text>
                     <View style={styles.doanBtnView}>
-                        <Button title='免流下载'
+                        <Button title="免流下载"
                             color="red"
                             style={styles.downloadBtnText}/>
                     </View>
