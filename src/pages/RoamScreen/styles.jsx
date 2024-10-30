@@ -126,7 +126,12 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 20,
         alignItems: 'center',
-        padding: 20
+        padding: 20,
+    },
+    closeDownloadModal: {
+        position: 'absolute',
+        right: 10,
+        top: 10,
     },
     tipText: {
         fontWeight: 'bold',
@@ -136,13 +141,16 @@ const styles = StyleSheet.create({
     doanBtnView: {
         width: '80%',
         borderRadius: 20,
+        height: 40,
         overflow: 'hidden',
     },
     downloadBtnText: {
         backgroundColor: 'red',
     },
     doanloadText: {
-        color: '#2b5d99'
+        color: '#2b5d99',
+        height: 30,
+        lineHeight: 30
     },
 });
 export default styles;

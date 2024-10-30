@@ -16,9 +16,9 @@ import AudioListView from '../../component/AudioListView/index';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen, setAudioListOpen } from '../../model/reducers';
-// import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import { fetch } from '@react-native-community/netinfo';
-import { downloadFile, ExternalDirectoryPath } from 'react-native-fs';
+import { downloadFile, ExternalDirectoryPath, DocumentDirectoryPath, PicturesDirectoryPath } from 'react-native-fs';
 //DocumentDirectoryPath应用的私有存储目录
 //ExternalDirectoryPath公共存储目录
 const RoamScreen = (props)=> {
@@ -123,7 +123,6 @@ const RoamScreen = (props)=> {
     };
     const downloadMp3ToGallery = async (url, fileName) => {
         const hasPermission = await requestStoragePermission();
-
         if (!hasPermission) {
           alert('Storage permission is required to download the file.');
           return;
@@ -132,6 +131,7 @@ const RoamScreen = (props)=> {
         const downRes = downloadFile({
             fromUrl: url,
             toFile: toFileUrl,
+            background: true,
             progress: (res)=>{
                 const percentage = res.bytesWritten / res.contentLength;
                 console.log('download progress', percentage * 100);
@@ -141,44 +141,23 @@ const RoamScreen = (props)=> {
             alert('文件保存在' + toFileUrl);
 
         }).catch(err=>{
-            console.log('下载失败', err);
+            alert('下载失败' + err);
         });
-        // const { config, fs } = RNFetchBlob;
-        // const date = new Date();
-        // const PictureDir = fs.dirs.PictureDir; // 获取设备上的图片目录
-        // const filename = `music_${Math.floor(date.getTime() + date.getSeconds() / 2)}.mp3`;
-        // const filePath = `${PictureDir}/${filename}`;
-
-        // config({
-        //   fileCache: true,
-        //   appendExt: 'mp3',
-        //   addAndroidDownloads: {
-        //     useDownloadManager: true, // 使用 Android 的下载管理器
-        //     notification: true,
-        //     path: filePath,
-        //     description: 'Downloading mp3.',
-        //   },
-        // })
-        // .fetch('GET', url)
-        // .then((res) => {
-        //   console.log('The file saved to ', res.path());
-        //   // 文件已经下载完，并保存到相册
-        // })
-        // .catch((error) => {
-        //   console.error(error);
-        // });
       };
     const openDownloadModal = ()=>{
         fetch().then(state => {
-            if(true || state.type === 'wifi'){
-                //只可以下载http或https的资源
-                const mp3URL = 'https://github.com/hlxll/RN74/blob/main/src/static/music/warning.mp3';
-                downloadMp3ToGallery(mp3URL, 'download.mp3');
+            if(state.type === 'wifi'){
+                downloadAudio();
             }else{
                 setDownloadOpen(true);
             }
         });
     };
+    const downloadAudio=()=>{
+        //只可以下载http或https的资源
+        const mp3URL = 'http://192.168.43.217:3000/warning.mp3';
+        downloadMp3ToGallery(mp3URL, 'download.mp3');
+    }
     return(
         <View>
             {
@@ -295,6 +274,10 @@ const RoamScreen = (props)=> {
                 transparent={true}
                 animationType="none">
                 <View style={styles.downloadModalView}>
+                    <Text style={styles.closeDownloadModal}
+                        onPress={()=>{setDownloadOpen(false)}}>
+                        X
+                    </Text>
                     <DownloadOpen width={50}/>
                     <Text style={styles.tipText}>流量提醒</Text>
                     <Text>
@@ -305,7 +288,7 @@ const RoamScreen = (props)=> {
                             color="red"
                             style={styles.downloadBtnText}/>
                     </View>
-                    <Text style={styles.doanloadText}>使用流量下载</Text>
+                    <Text style={styles.doanloadText} onPress={downloadAudio}>使用流量下载</Text>
                 </View>
             </Modal>
         </View>
