@@ -8,17 +8,25 @@ import { setAudioListOpen } from '../../model/reducers';
 const AudioListView = () =>{
     const {height, width} = Dimensions.get('window');
     const dispatch = useDispatch();
-    const pan = useRef(new Animated.ValueXY()).current;
+    const pan = useRef(new Animated.ValueXY({
+        x: 0,
+        y: -height * 0.7
+    })).current;
     const [ownTab, setOwnTab] = useState(1);
     const [audioList, setAudioList] = useState([]);//音乐列表
     let nowY = '';
-    pan.addListener(function({x, y}){
-        if(y > (-height * 0.5) && nowY < y){
-            pan.setOffset({
+    let lastDispatch = false;
+    let moveStartY = useRef(0).current;
+    //这里监听值内部改变值，会产生递归
+    const panAddId = pan.addListener(function({x, y}){
+        if(y > (-height * 0.5) && nowY < y && !lastDispatch){
+            lastDispatch = true;
+            pan.setValue({
                 x: pan.x._value,
                 y: 0,
             });
             dispatch(setAudioListOpen());
+            pan.removeListener(panAddId);
         }
         nowY = y;
     });
@@ -35,43 +43,57 @@ const AudioListView = () =>{
                 people: 'Lunhui',
             },
         ]);
-        setTimeout(()=>{
-            initAnimated();
-        },100);
+        // setTimeout(()=>{
+        //     initAnimated();
+        // },100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
-            onPanResponderGrant: () => {
+            onPanResponderGrant: (evt, gest) => {
+                //!下方的Animated之后再设置偏移，有一瞬间pan.y的值改变很大
+                moveStartY = pan.y._value;
                 pan.setOffset({
                     x: pan.x._value,
-                    y: pan.y._value,
-                });
-                pan.setValue({
-                    x: 0,
-                    y: 0,
+                    y: moveStartY,
                 });
             },
-            onPanResponderMove: Animated.event(
-                [
-                    null,
-                    { dx: pan.x, dy: pan.y },
-                ],
-                {
-                    useNativeDriver: false,
+            onPanResponderMove: (evt, state)=>{
+                const newY = moveStartY + state.dy;
+                if(newY >= (-height * 0.7)){
+                    pan.setValue({
+                        x: pan.x._value,
+                        y: state.dy,
+                    });
+                    // Animated.event(
+                    //     [
+                    //         null,
+                    //         { dx: pan.x, dy: pan.y },
+                    //     ],
+                    //     {
+                    //         useNativeDriver: false,
+                    //         listener: (event)=>{
+                    //              const newY = moveStartY + event.nativeEvent.dy;
+                    //              if(newY >= (-height * 0.7)){pan.setValue({x:pan.x._value, y:event.nativeEvent.dy})} 
+                    //         }
+                    //     }
+                    // )
                 }
-            ),
-            onPanResponderRelease: (evt, gest) => {
-                if(pan.y < (-(height * 0.5))){
-                    console.log('恢复');
+            },
+            onPanResponderRelease: (evt, state) => {
+                const newY = moveStartY + state.dy;
+                if(newY < (-(height * 0.5))){
+                    pan.flattenOffset();
                     initAnimated(500);
                 }
-                pan.flattenOffset();
             },
         })
     ).current;
+    //拖动后触发了这个动画就会在下次拖动开始发生闪烁
     const initAnimated = (time)=>{
+        console.log(height * 0.7);
+        
         Animated.timing(pan.y, {
             toValue: -height * 0.7,
             duration: time || 3000,
@@ -85,6 +107,7 @@ const AudioListView = () =>{
     };
     return(
         <View style={styles.container}>
+            <Text>{pan.y._value}</Text>
             <Animated.View
                     style={[
                         styles.audioAnimated,

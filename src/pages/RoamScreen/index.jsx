@@ -16,9 +16,9 @@ import AudioListView from '../../component/AudioListView/index';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen, setAudioListOpen } from '../../model/reducers';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import { fetch } from '@react-native-community/netinfo';
-import { downloadFile, ExternalDirectoryPath, DocumentDirectoryPath, PicturesDirectoryPath } from 'react-native-fs';
+import { downloadFile, ExternalDirectoryPath } from 'react-native-fs';
 //DocumentDirectoryPath应用的私有存储目录
 //ExternalDirectoryPath公共存储目录
 const RoamScreen = (props)=> {
