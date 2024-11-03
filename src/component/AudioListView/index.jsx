@@ -8,10 +8,8 @@ import { setAudioListOpen } from '../../model/reducers';
 const AudioListView = () =>{
     const {height, width} = Dimensions.get('window');
     const dispatch = useDispatch();
-    const pan = useRef(new Animated.ValueXY({
-        x: 0,
-        y: -height * 0.7
-    })).current;
+    const pan = useRef(new Animated.ValueXY()).current;
+    const position = useRef(new Animated.Value(0)).current;
     const [ownTab, setOwnTab] = useState(1);
     const [audioList, setAudioList] = useState([]);//音乐列表
     let nowY = '';
@@ -43,9 +41,9 @@ const AudioListView = () =>{
                 people: 'Lunhui',
             },
         ]);
-        // setTimeout(()=>{
-        //     initAnimated();
-        // },100);
+        setTimeout(()=>{
+            initAnimated();
+        },100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     const panResponder = useRef(
@@ -54,10 +52,19 @@ const AudioListView = () =>{
             onPanResponderGrant: (evt, gest) => {
                 //!下方的Animated之后再设置偏移，有一瞬间pan.y的值改变很大
                 moveStartY = pan.y._value;
+                // pan.setOffset({
+                //     x: pan.x._value,
+                //     y: moveStartY,
+                // });
+                pan.setValue({
+                    x: 0,
+                    y: 0,
+                });
                 pan.setOffset({
                     x: pan.x._value,
-                    y: moveStartY,
+                    y: -height * 0.7,
                 });
+                
             },
             onPanResponderMove: (evt, state)=>{
                 const newY = moveStartY + state.dy;
@@ -66,19 +73,6 @@ const AudioListView = () =>{
                         x: pan.x._value,
                         y: state.dy,
                     });
-                    // Animated.event(
-                    //     [
-                    //         null,
-                    //         { dx: pan.x, dy: pan.y },
-                    //     ],
-                    //     {
-                    //         useNativeDriver: false,
-                    //         listener: (event)=>{
-                    //              const newY = moveStartY + event.nativeEvent.dy;
-                    //              if(newY >= (-height * 0.7)){pan.setValue({x:pan.x._value, y:event.nativeEvent.dy})} 
-                    //         }
-                    //     }
-                    // )
                 }
             },
             onPanResponderRelease: (evt, state) => {
@@ -92,22 +86,36 @@ const AudioListView = () =>{
     ).current;
     //拖动后触发了这个动画就会在下次拖动开始发生闪烁
     const initAnimated = (time)=>{
-        console.log(height * 0.7);
-        
-        Animated.timing(pan.y, {
-            toValue: -height * 0.7,
-            duration: time || 3000,
-            useNativeDriver: true,
-        }).start(()=>{});
+        let ids = setInterval(()=>{
+            if(pan.y._value <= (-height * 0.7)){
+                clearInterval(ids);
+            }else{
+                pan.setValue({
+                    x: pan.x._value,
+                    y: pan.y._value - 2,
+                });
+            }
+        }, 100);
+        // Animated.timing(pan.y, {
+        //     toValue: -height * 0.7,
+        //     duration: time || 3000,
+        //     useNativeDriver: true,
+        // }).start(()=>{
+        //     // pan.setOffset({
+        //     //     x: 0,
+        //     //     y: 0,
+        //     // });
+        //     pan.setValue({
+        //         x: pan.x._value,
+        //         y: -height * 0.7,
+        //     });
+        // });
     };
     const selectTab = (type)=>{
-        console.log(type);
-        
         setOwnTab(type);
     };
     return(
         <View style={styles.container}>
-            <Text>{pan.y._value}</Text>
             <Animated.View
                     style={[
                         styles.audioAnimated,
