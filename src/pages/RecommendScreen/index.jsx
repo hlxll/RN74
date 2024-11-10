@@ -11,9 +11,7 @@ const ScrollItem = ({data})=>{
     <ImageBackground 
       style={styles.scrollItem}>
       <View style={styles.scrollItem_head}>
-        <Text>
-        {data.icon}
-        </Text>
+        <ImageBackground source={data.icon}/>
         <Text>{data.title}</Text>
       </View>
       <View style={styles.scrollItem_footer}>
@@ -33,8 +31,8 @@ const App = () => {
     while(i < 10){
       list.push({
         title: '每日推荐',
-        icon: <HuaTong width={10} height={10}/>,
-        image: '',
+        icon: '../../static/image/recommend/huatong.svg',
+        image: '../../static/image/recommend/peopleBack.jpg',
         text: '符合你口味的新鲜好歌',
       });
       i++;
@@ -55,7 +53,7 @@ const App = () => {
           style={styles.searchIcon}
           width={20}
           height={20}/>
-          <TextInput placeholder="失乐隔壁老樊"
+          <TextInput placeholder="&#x2764失乐隔壁老樊"
             style={styles.input}/>
           <Saoma style={styles.sao_headIcon}
           width={20}
@@ -68,6 +66,9 @@ const App = () => {
       <View style={styles.scrollList}>
         <View style={styles.scrollHead}>
           <Text>早上好</Text>
+          <View style={styles.scrollHead_right}>
+            <Text>VIP 送会员返现金{'>'}</Text>
+          </View>
         </View>
         <View>
             <FlatList
