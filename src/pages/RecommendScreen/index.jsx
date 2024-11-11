@@ -6,16 +6,28 @@ import Saoma from '../../static/image/recommend/saoma.svg';
 import HuaTong from '../../static/image/recommend/huatong.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
 const winWidth = Dimensions.get('window').width;
-const ScrollItem = ({data})=>{
+const ScrollItem = ({data, footType})=>{
+  console.log(footType);
+  
   return(
-    <ImageBackground 
+    <ImageBackground source={data.image}
       style={styles.scrollItem}>
       <View style={styles.scrollItem_head}>
-        <ImageBackground source={data.icon}/>
-        <Text>{data.title}</Text>
+        <HuaTong width={25} height={25} style={styles.scrollItem_head_icon}/>
+        <Text style={styles.scrollItem_head_title}>{data.title}</Text>
       </View>
-      <View style={styles.scrollItem_footer}>
-        <Text>
+      <View style={[
+        styles.scrollItem_footer,
+        {
+          backgroundColor:footType || '#000'
+        }
+      ]}>
+        <Text style={[
+          {
+            color: footType?'#000':'#fff',
+            paddingLeft: 5,
+          }
+        ]}>
         {data.text}
         </Text>
       </View>
@@ -25,19 +37,31 @@ const ScrollItem = ({data})=>{
 const App = () => {
   const [dayTime, setDayTime] = useState('11');
   const [scrollData, setScrollData] = useState([]);
+  const [scrollNumData, setScrollNumData] = useState([]);
+
   useEffect(()=>{
     let list = [];
     let i = 0;
+    let list2 = [];
+    let j = 0;
     while(i < 10){
       list.push({
         title: '每日推荐',
-        icon: '../../static/image/recommend/huatong.svg',
-        image: '../../static/image/recommend/peopleBack.jpg',
+        icon: require('../../static/image/recommend/huatong.svg'),
+        image: require('../../static/image/recommend/peopleBack.jpg'),
         text: '符合你口味的新鲜好歌',
       });
       i++;
+      list2.push({
+        title: '14.4万',
+        icon: require('../../static/image/recommend/huatong.svg'),
+        image: require('../../static/image/recommend/peopleBack.jpg'),
+        text: 'KTV热歌：八九零后麦霸点唱指南',
+      });
+      j++;
     }
     setScrollData(list);
+    setScrollNumData(list2)
   },[]);
 
   return (
@@ -53,7 +77,7 @@ const App = () => {
           style={styles.searchIcon}
           width={20}
           height={20}/>
-          <TextInput placeholder="&#x2764失乐隔壁老樊"
+          <TextInput placeholder={`❤️失乐隔壁老樊`}
             style={styles.input}/>
           <Saoma style={styles.sao_headIcon}
           width={20}
@@ -65,7 +89,7 @@ const App = () => {
       </View>
       <View style={styles.scrollList}>
         <View style={styles.scrollHead}>
-          <Text>早上好</Text>
+          <Text style={styles.scrollLeftTitle}>早上好</Text>
           <View style={styles.scrollHead_right}>
             <Text>VIP 送会员返现金{'>'}</Text>
           </View>
@@ -75,6 +99,18 @@ const App = () => {
             data={scrollData}
             horizontal={true}
             renderItem={({item}) => <ScrollItem data={item}/>}
+            keyExtractor={item => item.id}/>
+        </View>
+      </View>
+      <View style={styles.scrollList}>
+        <View style={styles.scrollHead}>
+          <Text style={styles.scrollHeadTitle}>推荐歌单&nbsp;{`>`}</Text>
+        </View>
+        <View>
+            <FlatList
+            data={scrollNumData}
+            horizontal={true}
+            renderItem={({item}) => <ScrollItem data={item} footType={'#fff'}/>}
             keyExtractor={item => item.id}/>
         </View>
       </View>
