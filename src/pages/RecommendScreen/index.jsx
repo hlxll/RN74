@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Dimensions, FlatList, ImageBackground } from 'react-native';
 import styles from './less.jsx';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import Saoma from '../../static/image/recommend/saoma.svg';
 import HuaTong from '../../static/image/recommend/huatong.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
+import { RNCamera } from 'react-native-camera';
 const winWidth = Dimensions.get('window').width;
 const ScrollItem = ({data, footType})=>{
-  console.log(footType);
-  
   return(
     <ImageBackground source={data.image}
       style={styles.scrollItem}>
@@ -19,7 +18,7 @@ const ScrollItem = ({data, footType})=>{
       <View style={[
         styles.scrollItem_footer,
         {
-          backgroundColor:footType || '#000'
+          backgroundColor:footType || '#000',
         }
       ]}>
         <Text style={[
@@ -38,7 +37,15 @@ const App = () => {
   const [dayTime, setDayTime] = useState('11');
   const [scrollData, setScrollData] = useState([]);
   const [scrollNumData, setScrollNumData] = useState([]);
-
+  const cameraRef = useRef(null);
+  const taskPicture = async ()=>{
+    if(cameraRef.current){
+      console.log(cameraRef.current.takePictureAsync);
+      const options = {quality: 0.5, base64: true};
+      const data = await cameraRef.current.takePictureAsync(options);
+      console.log("shuju=", data);
+    }
+  };
   useEffect(()=>{
     let list = [];
     let i = 0;
@@ -79,7 +86,11 @@ const App = () => {
           height={20}/>
           <TextInput placeholder={`❤️失乐隔壁老樊`}
             style={styles.input}/>
+          <RNCamera ref={cameraRef}
+            type={RNCamera.Constants.Type.back}
+            flashMode={RNCamera.Constants.FlashMode.on}/>
           <Saoma style={styles.sao_headIcon}
+          onPress={taskPicture}
           width={20}
           height={20}/>
         </View>
