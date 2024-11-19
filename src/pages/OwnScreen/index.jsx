@@ -1,6 +1,10 @@
 import React from 'react';
 import { ImageBackground, Text, View } from 'react-native';
-import HeaderLog from '../../static/image/'
+import HeaderLog from '../../static/image/renxiang.png'
+import LieBiao from '../../static/image/liebiao.svg'
+import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
+import MoreList from '../../static/image/gengduo.svg';
+
 import styles from './styles';
 const OwnScreen = ()=>{
     const details = [
@@ -24,7 +28,18 @@ const OwnScreen = ()=>{
     return(
         <View style={styles.OwnScreen}>
             <View style={styles.headLog}>
+                <View style={styles.headBtn}>
+                    <LieBiao width={20}/>
+                    <Text style={styles.headText}>
+                        加油
+                    </Text>
+                    <View style={styles.rightIcon}>
+                        <SearchIcon width={25}/>
+                        <MoreList width={25}/>
+                    </View>
+                </View>
                 <ImageBackground source={HeaderLog}
+                    style={styles.headerLog}
                 width={50}
                 height={50}/>
                 <View>
