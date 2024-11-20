@@ -103,6 +103,8 @@ const App = () => {
             style={styles.input}/>
             {device != null && hasPermission ? (
               <Camera
+              width={'100%'}
+              height={'100%'}
               ref={camera}
               device={device}
               isActive={true}
