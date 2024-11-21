@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, Dimensions, FlatList, ImageBackground } from 'react-native';
+import { View, Text, TextInput, Dimensions, FlatList, ImageBackground, Modal } from 'react-native';
 import styles from './less.jsx';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import Saoma from '../../static/image/recommend/saoma.svg';
@@ -9,7 +9,9 @@ import {
   Camera,
   useCameraDevice,
   useCameraPermission,
+  useFrameProcessor,
 } from 'react-native-vision-camera';
+import { scanBarcodes } from 'vision-camera-code-scanner';
 const winWidth = Dimensions.get('window').width;
 const ScrollItem = ({data, footType})=>{
   return(
@@ -44,6 +46,8 @@ const App = () => {
     physicalDevices: ['wide-angle-camera'],
  });
   const camera = useRef();
+  const [showPhoto, setShowPhoto] = useState(false)
+
   useEffect(() => {
     if (!hasPermission) {
         requestPermission();
@@ -81,11 +85,20 @@ const App = () => {
   },[]);
   // 拍照
   const takePicture = async () => {
-    const photo = await camera.current?.takePhoto({
-      flash: 'auto',
-    });
-    console.log(photo);
+    // const photo = await camera.current?.takePhoto({
+    //   flash: 'auto',
+    // });
+    // console.log(photo);
+    setShowPhoto(true)
   };
+  const frameProcessor=useFrameProcessor((frame)=>{
+    'worklet';
+    const barcodes = scanBarcodes(frame);
+    if(barcodes.length){
+      console.log(barcodes);
+      // setBarcode(barcodes[0].displayValue)
+    }
+  })
   return (
     <View style={styles.container}>
       <View style={styles.recomm_head}>
@@ -101,16 +114,6 @@ const App = () => {
           height={20}/>
           <TextInput placeholder={'❤️失乐隔壁老樊'}
             style={styles.input}/>
-            {device != null && hasPermission ? (
-              <Camera
-              width={'100%'}
-              height={'100%'}
-              ref={camera}
-              device={device}
-              isActive={true}
-              photo={true}
-              />
-            ) : <Text>相机错误</Text>}
           <Saoma style={styles.sao_headIcon}
           onPress={takePicture}
           width={20}
@@ -147,6 +150,20 @@ const App = () => {
             />
         </View>
       </View>
+      <Modal>
+        {device != null && hasPermission && showPhoto ? (
+          <Camera
+          width={'100%'}
+          height={'100%'}
+          ref={camera}
+          device={device}
+          isActive={true}
+          photo={true}
+          frameProcessor={frameProcessor}
+          />
+          ) : ''
+        }
+      </Modal>
     </View>
   );
 };
