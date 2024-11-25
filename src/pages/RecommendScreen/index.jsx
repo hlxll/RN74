@@ -91,14 +91,14 @@ const App = () => {
     // console.log(photo);
     setShowPhoto(true)
   };
-  const frameProcessor=useFrameProcessor((frame)=>{
+  const frameProcessor = useFrameProcessor((frame)=>{
     'worklet';
     const barcodes = scanBarcodes(frame);
     if(barcodes.length){
       console.log(barcodes);
       // setBarcode(barcodes[0].displayValue)
     }
-  })
+  });
   return (
     <View style={styles.container}>
       <View style={styles.recomm_head}>
