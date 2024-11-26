@@ -94,11 +94,20 @@ const App = () => {
   const frameProcessor = useFrameProcessor((frame)=>{
     'worklet';
     const barcodes = scanBarcodes(frame);
+    console.log(barcodes);
+    
     if(barcodes.length){
       console.log(barcodes);
       // setBarcode(barcodes[0].displayValue)
     }
   });
+  // const frameProcessor = useFrameProcessor((frame) => {
+  //   'worklet'
+  //   const objects = detectObjects(frame)
+  //   const label = objects[0].name
+  //   console.log(`You're looking at a ${label}.`)
+  // }, [])
+  
   return (
     <View style={styles.container}>
       <View style={styles.recomm_head}>
