@@ -93,6 +93,49 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
         borderRadius: 20,
         justifyContent: 'center'
+    },
+    photoView: {
+        width: '100%',
+        height: '100%',
+        position:'absolute',
+        paddingLeft: 20,
+        paddingRight: 20,
+        left:0,
+        top:0,
+        backgroundColor:'transparent',
+    },
+    photoHead: {
+        height: 40,
+        flexDirection: 'row',
+        alignItems:'center',
+    },
+    photoHeadLeft: {
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    photoHeadLText: {
+        color: '#fff',
+        fontWeight: '800',
+        marginLeft: 10,
+        fontSize: 16
+    },
+    photoHeadRight: {},
+    photoHeadRText:{
+        color:'#fff',
+    },
+    qrPhoto: {
+        width: 100,
+        height: 40,
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius: 20,
+        backgroundColor:'rgba(255,255,255,0.3)',
+        overflow:'hidden',
+        margin:'auto',
+        marginBottom: 20
+    },
+    qrText:{
+        color: '#ffffff'
     }
 });
 export default styles;

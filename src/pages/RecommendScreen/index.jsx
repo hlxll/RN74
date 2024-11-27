@@ -1,18 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, Dimensions, FlatList, ImageBackground, Modal } from 'react-native';
+import { View, Text, TextInput, Dimensions, FlatList, ImageBackground, Modal, Animated, Alert } from 'react-native';
 import styles from './less.jsx';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import Saoma from '../../static/image/recommend/saoma.svg';
 import HuaTong from '../../static/image/recommend/huatong.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
+import BackRecommend from '../../static/image/recommend/fanhui.svg';
+
 import {
   Camera,
   useCameraDevice,
   useCameraPermission,
+  useCodeScanner,
   useFrameProcessor,
 } from 'react-native-vision-camera';
-import { scanBarcodes } from 'vision-camera-code-scanner';
+import LinearGradient from 'react-native-linear-gradient';
+// import { scanBarcodes } from 'vision-camera-code-scanner';
 const winWidth = Dimensions.get('window').width;
+const winHeight = Dimensions.get('window').height;
+
 const ScrollItem = ({data, footType})=>{
   return(
     <ImageBackground source={data.image}
@@ -46,8 +53,10 @@ const App = () => {
     physicalDevices: ['wide-angle-camera'],
  });
   const camera = useRef();
-  const [showPhoto, setShowPhoto] = useState(false)
-
+  const [showPhoto, setShowPhoto] = useState(false);
+  const photoAnimat = useRef(new Animated.Value(50)).current;
+  const photoNum = useRef(50);
+  const moveHieght = winHeight * 0.6
   useEffect(() => {
     if (!hasPermission) {
         requestPermission();
@@ -57,6 +66,7 @@ const App = () => {
   const [dayTime, setDayTime] = useState('11');
   const [scrollData, setScrollData] = useState([]);
   const [scrollNumData, setScrollNumData] = useState([]);
+  let moveIds = ''
   useEffect(()=>{
     let list = [];
     let i = 0;
@@ -82,32 +92,61 @@ const App = () => {
     }
     setScrollData(list);
     setScrollNumData(list2);
+    return()=>{
+      if(moveIds){
+        clearInterval(moveIds);
+      }
+    }
   },[]);
   // 拍照
   const takePicture = async () => {
-    // const photo = await camera.current?.takePhoto({
-    //   flash: 'auto',
-    // });
-    // console.log(photo);
-    setShowPhoto(true)
+    setShowPhoto(true);
+    moveIds = setInterval(()=>{
+      moveRedLine();
+    },3500);
+  };
+  //上下移动的红线
+  const moveRedLine = () => {
+    if(photoNum.current === moveHieght){
+      Animated.timing(photoAnimat, {
+        toValue: 50,
+        duration: 3000,
+        useNativeDriver: true,
+      }).start((result)=>{
+        photoNum.current = result.value;
+      });
+    }else{
+      Animated.timing(photoAnimat, {
+        toValue: moveHieght,
+        duration: 3000,
+        useNativeDriver: true,
+      }).start((result)=>{
+        photoNum.current = result.value;
+      });
+    }
   };
   const frameProcessor = useFrameProcessor((frame)=>{
     'worklet';
-    const barcodes = scanBarcodes(frame);
-    console.log(barcodes);
-    
-    if(barcodes.length){
-      console.log(barcodes);
+    // const barcodes = scanBarcodes(frame);
+    // console.log(barcodes);
+
+    // if(barcodes.length){
+      // console.log(barcodes);
       // setBarcode(barcodes[0].displayValue)
-    }
+    // }
   });
-  // const frameProcessor = useFrameProcessor((frame) => {
-  //   'worklet'
-  //   const objects = detectObjects(frame)
-  //   const label = objects[0].name
-  //   console.log(`You're looking at a ${label}.`)
-  // }, [])
-  
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: (codes) => {
+      //返回二维码的数据
+      codes.forEach(item=>{
+        Alert.alert({
+          title:'二维码数据',
+          message: item.value,
+        })
+      })
+    },
+  });
   return (
     <View style={styles.container}>
       <View style={styles.recomm_head}>
@@ -159,18 +198,61 @@ const App = () => {
             />
         </View>
       </View>
-      <Modal>
+      <Modal visible={showPhoto}>
         {device != null && hasPermission && showPhoto ? (
-          <Camera
-          width={'100%'}
-          height={'100%'}
-          ref={camera}
-          device={device}
-          isActive={true}
-          photo={true}
-          frameProcessor={frameProcessor}
-          />
-          ) : ''
+          <>
+            <Camera
+              width={'100%'}
+              height={'100%'}
+              ref={camera}
+              device={device}
+              isActive={true}
+              photo={true}
+              // frameProcessor={frameProcessor}
+              codeScanner={codeScanner}
+              />
+              <View style={styles.photoView}>
+                <View style={styles.photoHead}>
+                  <View style={styles.photoHeadLeft}>
+                    <BackRecommend width={20} height={20}
+                      onPress={()=>{setShowPhoto(false);clearInterval(moveIds);}}/>
+                    <Text style={styles.photoHeadLText}>扫一扫</Text>
+                  </View>
+                  <View style={[
+                    styles.photoHeadRight,
+                    {
+                      marginLeft: winWidth - 160,
+                    }
+                  ]}>
+                    <Text style={styles.photoHeadRText}>相册{photoAnimat.current}</Text>
+                  </View>
+                </View>
+                <Animated.View
+                  style={[
+                    {
+                      width: '100%',
+                      translateY: photoAnimat,
+                    },
+                  ]}>
+                  <LinearGradient
+                    colors={['#ffffff','#ff0000', '#ff0000','#ff0000','#ffffff']}
+                    locations={[0, 0.1, 0.5, 0.9, 1]}
+                    // start={{x: 0, y: 0}}
+                    // end={{x: winWidth, y: 0}}
+                    style={[
+                      // eslint-disable-next-line react-native/no-inline-styles
+                      {
+                        width:'100%',
+                        height: 2,
+                      },
+                    ]}/>
+                </Animated.View>
+                <View style={styles.qrPhoto}>
+                  <Text style={styles.qrText}>我的二维码</Text>
+                </View>
+              </View>
+          </>
+          ) : <Text>没权限</Text>
         }
       </Modal>
     </View>
