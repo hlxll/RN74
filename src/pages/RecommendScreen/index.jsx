@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, Dimensions, FlatList, ImageBackground, Modal, Animated, Alert } from 'react-native';
+import { View, Text, TextInput, Dimensions, FlatList, ImageBackground,
+  Modal, Animated, Alert } from 'react-native';
 import styles from './less.jsx';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import Saoma from '../../static/image/recommend/saoma.svg';
 import HuaTong from '../../static/image/recommend/huatong.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
 import BackRecommend from '../../static/image/recommend/fanhui.svg';
-
+import LeftUserModal from '../../container/LeftUserModal';
 import {
   Camera,
   useCameraDevice,
@@ -56,17 +57,18 @@ const App = () => {
   const [showPhoto, setShowPhoto] = useState(false);
   const photoAnimat = useRef(new Animated.Value(50)).current;
   const photoNum = useRef(50);
-  const moveHieght = winHeight * 0.6
+  const moveHieght = winHeight * 0.6;
+  const [userModal, setUserModal] = useState(false);
   useEffect(() => {
     if (!hasPermission) {
         requestPermission();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [hasPermission]);
   const [dayTime, setDayTime] = useState('11');
   const [scrollData, setScrollData] = useState([]);
   const [scrollNumData, setScrollNumData] = useState([]);
-  let moveIds = ''
+  let moveIds = '';
   useEffect(()=>{
     let list = [];
     let i = 0;
@@ -96,7 +98,7 @@ const App = () => {
       if(moveIds){
         clearInterval(moveIds);
       }
-    }
+    };
   },[]);
   // 拍照
   const takePicture = async () => {
@@ -143,8 +145,8 @@ const App = () => {
         Alert.alert({
           title:'二维码数据',
           message: item.value,
-        })
-      })
+        });
+      });
     },
   });
   return (
@@ -152,7 +154,8 @@ const App = () => {
       <View style={styles.recomm_head}>
         <Liebiao style={styles.LieheadIcon}
         width={20}
-        height={20}/>
+        height={20}
+        onPress={()=>{setUserModal(true);}}/>
         <View style={[styles.search,{
           width: winWidth - 80,
         }]}>
@@ -215,14 +218,14 @@ const App = () => {
                 <View style={styles.photoHead}>
                   <View style={styles.photoHeadLeft}>
                     <BackRecommend width={20} height={20}
-                      onPress={()=>{setShowPhoto(false);clearInterval(moveIds);}}/>
+                      onPress={()=>{setShowPhoto(false); clearInterval(moveIds);}}/>
                     <Text style={styles.photoHeadLText}>扫一扫</Text>
                   </View>
                   <View style={[
                     styles.photoHeadRight,
                     {
                       marginLeft: winWidth - 160,
-                    }
+                    },
                   ]}>
                     <Text style={styles.photoHeadRText}>相册{photoAnimat.current}</Text>
                   </View>
@@ -255,6 +258,10 @@ const App = () => {
           ) : <Text>没权限</Text>
         }
       </Modal>
+      {
+        userModal ?
+      <LeftUserModal show={userModal}/> : ''
+      }
     </View>
   );
 };

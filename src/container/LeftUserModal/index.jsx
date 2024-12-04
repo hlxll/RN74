@@ -1,6 +1,8 @@
-import React, { Modal, ProgressBarAndroidComponent, Text, View } from 'react-native';
-import PropleSvg from '../../static/image/renxiang.svg';
+import React, { Image, Modal, ProgressBarAndroidComponent, Text, View } from 'react-native';
+import PropleSvg from '../../static/image/renxiang.png';
 import Saoma from '../../static/image/recommend/saoma.svg';
+import TwoEventIcon from '../../static/image/recommend/WechatIMG119.png';
+
 import styles from './styles.jsx';
 import LinearGradient from 'react-native-linear-gradient';
 const LeftUserModal = (props)=>{
@@ -70,32 +72,36 @@ const LeftUserModal = (props)=>{
     return(
         <Modal visible={show}
         transparent={true}>
+            <View style={styles.modelBack}>
             <View style={styles.LeftUserModal}>
                 <View style={styles.head}>
-                    <PropleSvg width={20} height={20}/>
+                    <Image source={PropleSvg} style={styles.userLog}/>
                     <Text>二十八200122{'>'}</Text>
                     <View style={styles.saoma}>
-                        <Saoma/>
+                        <Saoma width={20} height={20}/>
                     </View>
                 </View>
                 <LinearGradient
-                    colors={['#3d3938','#5c4c4c','#3d3938']}
-                    locations={[0, 0.5, 1]}
+                    colors={['#3d3938','#5c4c4c','#5c4c4c','#5c4c4c','#3d3938']}
+                    locations={[0,0.2, 0.5,0.8, 1]}
                     style={styles.MemberCenter}>
                     <View style={styles.memberName}>
                         <Text style={styles.memberLevel}>黑胶VIP.伍</Text>
-                        <ProgressBarAndroidComponent
-                            progress={10}
-                            color={'#fff'}
-                            style={styles.progress}/>
+                        <View style={styles.progress}>
+                                <View style={styles.progressNum}></View>
+                            </View>
                         <Text style={styles.memberNum}>v6</Text>
+                        <View style={styles.memberCenterZero}>
+                                <Text style={styles.zeroText}>会员中心</Text>
+                            </View>
                     </View>
                     <Text style={styles.memberText}>
                         会员福利 | 锦鲤福利上新
                     </Text>
                     <View style={styles.head}>
-                        <Text>双11大促! VIP低至4.9折!</Text>
-                        <Saoma style={styles.memberNum}/>
+                        <Text style={styles.twoElevenText}>双11大促! VIP低至4.9折!</Text>
+                        {/* <Saoma style={styles.twoEleven} width={20} height={20}/> */}
+                        <Image source={TwoEventIcon} style={styles.twoEleven}/>
                     </View>
                 </LinearGradient>
                 {
@@ -120,7 +126,7 @@ const LeftUserModal = (props)=>{
                                                         <Text style={styles.linkRNumText}>{link.num}</Text>
                                                     </View>:''
                                                 }
-                                                {'>'}
+                                                <Text>{' >'}</Text>
                                             </View>
                                         </View>
                                     ))
@@ -129,6 +135,7 @@ const LeftUserModal = (props)=>{
                         )
                     })
                 }
+            </View>
             </View>
         </Modal>
     );
