@@ -7,24 +7,24 @@ import styles from './styles.jsx';
 import LinearGradient from 'react-native-linear-gradient';
 const LeftUserModal = (props)=>{
     const {show} = props;
-    const linkData=[
+    const linkData = [
         [
             {
                 icon:'',
                 name:'双人空间',
-                text:'超多人都在玩'
-            }
+                text:'超多人都在玩',
+            },
         ],
         [
             {
                 icon:'',
                 name:'我的消息',
-                num:'37'
+                num:'37',
             },
             {
                 icon:'',
                 name:'云贝中心',
-                text:'兑换黑胶VIP'
+                text:'兑换黑胶VIP',
             },
             {
                 icon:'',
@@ -33,13 +33,13 @@ const LeftUserModal = (props)=>{
             {
                 icon:'',
                 name:'创作者中心',
-            }
+            },
         ],
         [
             {
                 icon:'',
                 name:'趣测',
-                text:'点击查看今日运势'
+                text:'点击查看今日运势',
             },
             {
                 icon:'',
@@ -60,15 +60,15 @@ const LeftUserModal = (props)=>{
             {
                 icon:'',
                 name:'彩铃专区',
-                text:'pick你的音乐彩铃'
+                text:'pick你的音乐彩铃',
             },
             {
                 icon:'',
                 name:'免流量听歌',
-                text:'最多领24个月会员'
-            }
-        ]
-    ]
+                text:'最多领24个月会员',
+            },
+        ],
+    ];
     return(
         <Modal visible={show}
         transparent={true}>
@@ -88,7 +88,7 @@ const LeftUserModal = (props)=>{
                     <View style={styles.memberName}>
                         <Text style={styles.memberLevel}>黑胶VIP.伍</Text>
                         <View style={styles.progress}>
-                                <View style={styles.progressNum}></View>
+                                <View style={styles.progressNum} />
                             </View>
                         <Text style={styles.memberNum}>v6</Text>
                         <View style={styles.memberCenterZero}>
@@ -119,12 +119,12 @@ const LeftUserModal = (props)=>{
                                             </Text>
                                             <View style={styles.linkRight}>
                                                 {
-                                                    link.text?<Text style={styles.linkRightText}>{link.text}</Text>:''
+                                                    link.text ? <Text style={styles.linkRightText}>{link.text}</Text> : ''
                                                 }
                                                 {
-                                                    link.num?<View style={styles.linkRightNum}>
+                                                    link.num ? <View style={styles.linkRightNum}>
                                                         <Text style={styles.linkRNumText}>{link.num}</Text>
-                                                    </View>:''
+                                                    </View> : ''
                                                 }
                                                 <Text>{' >'}</Text>
                                             </View>
@@ -132,7 +132,7 @@ const LeftUserModal = (props)=>{
                                     ))
                                 }
                             </View>
-                        )
+                        );
                     })
                 }
             </View>
