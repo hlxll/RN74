@@ -1,12 +1,14 @@
-import React, { Image, Modal, ProgressBarAndroidComponent, Text, View } from 'react-native';
+import React, { Dimensions, Image, Modal, ProgressBarAndroidComponent, Text, View } from 'react-native';
 import PropleSvg from '../../static/image/renxiang.png';
 import Saoma from '../../static/image/recommend/saoma.svg';
 import TwoEventIcon from '../../static/image/recommend/WechatIMG119.png';
 
-import styles from './styles.jsx';
+import styleFun from './styles.jsx';
 import LinearGradient from 'react-native-linear-gradient';
 const LeftUserModal = (props)=>{
     const {show} = props;
+    const {width} = Dimensions.get('window');
+    const styles = styleFun(width);
     const linkData = [
         [
             {
