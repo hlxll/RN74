@@ -5,6 +5,8 @@ const styles = (props)=>{
     return StyleSheet.create({
         modelBack: {
           backgroundColor: '#64666580',
+          flexDirection:'row',
+          height:'100%'
         },
         userModalBack: {
             backgroundColor:'rgba(255,255,255,0.7)',
@@ -18,6 +20,10 @@ const styles = (props)=>{
             backgroundColor:'#fff',
             justifyContent:'flex-start',
             flexWrap:'wrap',
+        },
+        modalClick: {
+            width: '20%',
+            height:'100%',
         },
         head: {
             flexDirection:'row',
@@ -102,8 +108,8 @@ const styles = (props)=>{
         linkGroup:{
             marginBottom: 10,
             backgroundColor:'#fff',
-            borderRadius: 20,
-            overflow:'hidden',
+            // borderRadius: 20,
+            // overflow:'hidden',
             height: 'auto',
         },
         linkItem:{

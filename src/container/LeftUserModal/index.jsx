@@ -1,4 +1,4 @@
-import React, { Dimensions, Image, Modal, ProgressBarAndroidComponent, Text, View } from 'react-native';
+import React, { Dimensions, Image, Modal, ProgressBarAndroidComponent, Text, TouchableOpacity, View } from 'react-native';
 import PropleSvg from '../../static/image/renxiang.png';
 import Saoma from '../../static/image/recommend/saoma.svg';
 import TwoEventIcon from '../../static/image/recommend/WechatIMG119.png';
@@ -6,7 +6,7 @@ import TwoEventIcon from '../../static/image/recommend/WechatIMG119.png';
 import styleFun from './styles.jsx';
 import LinearGradient from 'react-native-linear-gradient';
 const LeftUserModal = (props)=>{
-    const {show} = props;
+    const {show, setUserModal} = props;
     const {width} = Dimensions.get('window');
     const styles = styleFun(width);
     const linkData = [
@@ -75,69 +75,71 @@ const LeftUserModal = (props)=>{
         <Modal visible={show}
         transparent={true}>
             <View style={styles.modelBack}>
-            <View style={styles.LeftUserModal}>
-                <View style={styles.head}>
-                    <Image source={PropleSvg} style={styles.userLog}/>
-                    <Text>二十八200122{'>'}</Text>
-                    <View style={styles.saoma}>
-                        <Saoma width={20} height={20}/>
-                    </View>
-                </View>
-                <LinearGradient
-                    colors={['#3d3938','#5c4c4c','#5c4c4c','#5c4c4c','#3d3938']}
-                    locations={[0,0.2, 0.5,0.8, 1]}
-                    style={styles.MemberCenter}>
-                    <View style={styles.memberName}>
-                        <Text style={styles.memberLevel}>黑胶VIP.伍</Text>
-                        <View style={styles.progress}>
-                                <View style={styles.progressNum} />
-                            </View>
-                        <Text style={styles.memberNum}>v6</Text>
-                        <View style={styles.memberCenterZero}>
-                                <Text style={styles.zeroText}>会员中心</Text>
-                            </View>
-                    </View>
-                    <Text style={styles.memberText}>
-                        会员福利 | 锦鲤福利上新
-                    </Text>
+                <View style={styles.LeftUserModal}>
                     <View style={styles.head}>
-                        <Text style={styles.twoElevenText}>双11大促! VIP低至4.9折!</Text>
-                        {/* <Saoma style={styles.twoEleven} width={20} height={20}/> */}
-                        <Image source={TwoEventIcon} style={styles.twoEleven}/>
+                        <Image source={PropleSvg} style={styles.userLog}/>
+                        <Text>二十八200122{'>'}</Text>
+                        <View style={styles.saoma}>
+                            <Saoma width={20} height={20}/>
+                        </View>
                     </View>
-                </LinearGradient>
-                {
-                    linkData.map((item, index)=>{
-                        return(
-                            <View key={index} style={styles.linkGroup}>
-                                {
-                                    item.map((link, j)=>(
-                                        <View key={j} style={styles.linkItem}>
-                                            <Text>
-                                                {link.icon}
-                                            </Text>
-                                            <Text style={styles.linkItemName}>
-                                                {link.name}
-                                            </Text>
-                                            <View style={styles.linkRight}>
-                                                {
-                                                    link.text ? <Text style={styles.linkRightText}>{link.text}</Text> : ''
-                                                }
-                                                {
-                                                    link.num ? <View style={styles.linkRightNum}>
-                                                        <Text style={styles.linkRNumText}>{link.num}</Text>
-                                                    </View> : ''
-                                                }
-                                                <Text>{' >'}</Text>
+                    <LinearGradient
+                        colors={['#3d3938','#5c4c4c','#5c4c4c','#5c4c4c','#3d3938']}
+                        locations={[0,0.2, 0.5,0.8, 1]}
+                        style={styles.MemberCenter}>
+                        <View style={styles.memberName}>
+                            <Text style={styles.memberLevel}>黑胶VIP.伍</Text>
+                            <View style={styles.progress}>
+                                    <View style={styles.progressNum} />
+                                </View>
+                            <Text style={styles.memberNum}>v6</Text>
+                            <View style={styles.memberCenterZero}>
+                                    <Text style={styles.zeroText}>会员中心</Text>
+                                </View>
+                        </View>
+                        <Text style={styles.memberText}>
+                            会员福利 | 锦鲤福利上新
+                        </Text>
+                        <View style={styles.head}>
+                            <Text style={styles.twoElevenText}>双11大促! VIP低至4.9折!</Text>
+                            {/* <Saoma style={styles.twoEleven} width={20} height={20}/> */}
+                            <Image source={TwoEventIcon} style={styles.twoEleven}/>
+                        </View>
+                    </LinearGradient>
+                    {
+                        linkData.map((item, index)=>{
+                            return(
+                                <View key={index} style={styles.linkGroup}>
+                                    {
+                                        item.map((link, j)=>(
+                                            <View key={j} style={styles.linkItem}>
+                                                <Text>
+                                                    {link.icon}
+                                                </Text>
+                                                <Text style={styles.linkItemName}>
+                                                    {link.name}
+                                                </Text>
+                                                <View style={styles.linkRight}>
+                                                    {
+                                                        link.text ? <Text style={styles.linkRightText}>{link.text}</Text> : ''
+                                                    }
+                                                    {
+                                                        link.num ? <View style={styles.linkRightNum}>
+                                                            <Text style={styles.linkRNumText}>{link.num}</Text>
+                                                        </View> : ''
+                                                    }
+                                                    <Text>{' >'}</Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                    ))
-                                }
-                            </View>
-                        );
-                    })
-                }
-            </View>
+                                        ))
+                                    }
+                                </View>
+                            );
+                        })
+                    }
+                </View>
+                <TouchableOpacity style={styles.modalClick}
+                onPress={()=>{setUserModal(false);}}/>
             </View>
         </Modal>
     );

@@ -260,7 +260,7 @@ const App = () => {
       </Modal>
       {
         userModal ?
-      <LeftUserModal show={userModal}/> : ''
+      <LeftUserModal show={userModal} setUserModal={setUserModal}/> : ''
       }
     </View>
   );
