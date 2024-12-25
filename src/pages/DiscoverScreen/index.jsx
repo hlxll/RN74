@@ -1,12 +1,40 @@
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, ScrollView, Text, View } from 'react-native';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
 import LeftUserModal from '../../container/LeftUserModal';
-import styles from './style.jsx';
+import styleLess from './style.jsx';
 const DiscoverScreen = ()=>{
   const [userModal, setUserModal] = useState(false);
   const [openTab, setOpenTab] = useState('');
+  const [typeList, setTypeList] = useState([]);
+  const {width} = Dimensions.get('window');
+  const styles = styleLess(width)
+  useEffect(()=>{
+    setTypeList([
+        {
+            name: '精选',
+        },
+        {
+            name: '排行榜',
+        },
+        {
+            name: 'VIP',
+        },
+        {
+            name: '歌单',
+        },
+        {
+            name: '助眠',
+        },
+        {
+            name: '慢摇DJ',
+        },
+        {
+            name: '运动',
+        },
+    ]);
+  },[]);
   const ClickOpen = (type)=>{
     setOpenTab(type);
   };
@@ -35,6 +63,26 @@ const DiscoverScreen = ()=>{
                 <SearchIcon style={styles.searchIcon}
                     width={20}
                     height={20}/>
+            </View>
+            <View style={styles.typeGroupMain}>
+                <View style={styles.allTypeList}>
+                    <ScrollView style={styles.itemGroup}
+                        alwaysBounceHorizontal={true}
+                        horizontal={true}>
+                        {
+                            typeList.map(item=>{
+                                return(
+                                    <View style={styles.typeItem}>
+                                        <Text>
+                                        {item.name}
+                                        </Text>
+                                    </View>
+                                );
+                            })
+                        }
+                    </ScrollView>
+                </View>
+                <View style={styles.GroupIcon} />
             </View>
             {
                 userModal ?
