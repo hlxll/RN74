@@ -3,6 +3,7 @@ import { Dimensions, ScrollView, Text, View } from 'react-native';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
 import LeftUserModal from '../../container/LeftUserModal';
+import MoreIcon from '../../static/image/xianxia.svg'
 import styleLess from './style.jsx';
 const DiscoverScreen = ()=>{
   const [userModal, setUserModal] = useState(false);
@@ -82,7 +83,10 @@ const DiscoverScreen = ()=>{
                         }
                     </ScrollView>
                 </View>
-                <View style={styles.GroupIcon} />
+                <MoreIcon style={styles.GroupIcon} width={20} height={20}/>
+            </View>
+            <View>
+                
             </View>
             {
                 userModal ?
