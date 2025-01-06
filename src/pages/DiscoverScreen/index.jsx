@@ -3,14 +3,14 @@ import { Dimensions, ScrollView, Text, View } from 'react-native';
 import Liebiao from '../../static/image/recommend/liebiao.svg';
 import SearchIcon from '../../static/image/recommend/ic_search24px.svg';
 import LeftUserModal from '../../container/LeftUserModal';
-import MoreIcon from '../../static/image/xianxia.svg'
+import MoreIcon from '../../static/image/xianxia.svg';
 import styleLess from './style.jsx';
 const DiscoverScreen = ()=>{
   const [userModal, setUserModal] = useState(false);
   const [openTab, setOpenTab] = useState('');
   const [typeList, setTypeList] = useState([]);
   const {width} = Dimensions.get('window');
-  const styles = styleLess(width)
+  const styles = styleLess(width);
   useEffect(()=>{
     setTypeList([
         {
@@ -84,9 +84,6 @@ const DiscoverScreen = ()=>{
                     </ScrollView>
                 </View>
                 <MoreIcon style={styles.GroupIcon} width={20} height={20}/>
-            </View>
-            <View>
-                
             </View>
             {
                 userModal ?
