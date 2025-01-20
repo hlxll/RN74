@@ -1,4 +1,4 @@
-import { Alert, Button, View } from 'react-native';
+import React, { Alert, Button, View } from 'react-native';
 import styles from './css.jsx';
 const EjectCom = ()=>{
     const OpenAlert = ()=>{
@@ -21,7 +21,6 @@ const EjectCom = ()=>{
     return (
         <View className={styles.ejectComMain}>
             <Button onPress={OpenAlert}>打开alert</Button>
-
         </View>
     );
 };
